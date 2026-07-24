@@ -1,40 +1,28 @@
-# NeverQuit — Sesiunea 3: PWA instalabilă
+# NeverQuit — Versiunea 4: RPG Mode
 
-## REALIZAT
+## Noutăți
 
-- manifest PWA;
-- pictograme 192×192 și 512×512;
-- mod standalone când aplicația este instalată;
-- buton de instalare pe Android, când Chrome îl pune la dispoziție;
-- service worker pentru funcționare offline;
-- actualizarea automată a cache-ului între versiuni;
-- fișier `.nojekyll` pentru publicare statică directă pe GitHub Pages.
+- sistem de niveluri bazat pe totalul Spark câștigați;
+- progresul nivelului nu scade când Spark sunt cheltuiți pe recompense;
+- streak curent și record personal;
+- număr total de misiuni terminate;
+- șase insigne deblocate automat;
+- animație `+Spark`;
+- fereastră specială `LEVEL UP`;
+- migrare automată a datelor din versiunea precedentă;
+- funcționare PWA și offline păstrată.
 
-## Fișiere noi
+## Încărcare pe GitHub
 
-- `manifest.webmanifest`
+Încarcă toate fișierele și folderul `icons` peste versiunea existentă, apoi fă un commit direct în `main`.
+
+Fișierele care trebuie înlocuite:
+
+- `index.html`
+- `styles.css`
+- `app.js`
 - `service-worker.js`
-- `.nojekyll`
-- `icons/icon-192.png`
-- `icons/icon-512.png`
+- `manifest.webmanifest`
+- `README.md`
 
-## Cum actualizezi GitHub
-
-În repository-ul `neverquit`:
-
-1. încarcă toate fișierele și folderul `icons`;
-2. acceptă înlocuirea fișierelor `index.html`, `styles.css`, `app.js` și `README.md`;
-3. fă commit direct în ramura `main`;
-4. așteaptă publicarea GitHub Pages;
-5. deschide aplicația pe Android în Chrome;
-6. reîncarcă pagina o dată;
-7. apasă butonul „Instalează”, dacă apare, sau meniul Chrome → „Instalează aplicația”.
-
-## Test offline
-
-După ce ai deschis aplicația cel puțin o dată online:
-
-1. închide aplicația;
-2. oprește Wi‑Fi și datele mobile;
-3. deschide NeverQuit din pictograma de pe ecran;
-4. verifică dacă se deschide și dacă misiunile pot fi bifate.
+După publicare, deschide aplicația și reîncarcă pagina. Dacă aplicația instalată afișează încă versiunea veche, închide-o complet și redeschide-o după câteva secunde.

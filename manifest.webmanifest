@@ -2,7 +2,7 @@
   "id": "./",
   "name": "NeverQuit",
   "short_name": "NeverQuit",
-  "description": "Misiuni zilnice, progres și recompense Spark.",
+  "description": "Misiuni zilnice, niveluri, streak-uri, insigne și recompense Spark.",
   "lang": "ro",
   "start_url": "./",
   "scope": "./",

@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="NeverQuit" />
-  <title>NeverQuit — Ziua 2</title>
+  <title>NeverQuit — RPG Mode</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
@@ -47,6 +47,59 @@
 
     <section id="installHelp" class="install-help hidden">
       <strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
+    </section>
+
+
+    <section class="rpg-dashboard" aria-label="Progres RPG">
+      <article class="level-card">
+        <div class="level-orb">
+          <span class="level-caption">LEVEL</span>
+          <strong id="levelNumber">1</strong>
+        </div>
+        <div class="level-details">
+          <div class="level-heading">
+            <div>
+              <p class="eyebrow">Drumul campionului</p>
+              <h2 id="levelTitle">Începător curajos</h2>
+            </div>
+            <span id="levelProgressText" class="level-progress-text">0 / 500 Spark</span>
+          </div>
+          <div class="level-track" aria-label="Progres către nivelul următor">
+            <div id="levelProgressBar" class="level-progress-bar"></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="stat-grid">
+        <article class="stat-card">
+          <span class="stat-icon">🔥</span>
+          <strong id="currentStreak">0</strong>
+          <small>zile streak</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon">🏆</span>
+          <strong id="bestStreak">0</strong>
+          <small>record streak</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon">✓</span>
+          <strong id="totalMissions">0</strong>
+          <small>misiuni terminate</small>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon">✦</span>
+          <strong id="lifetimeSpark">0</strong>
+          <small>Spark câștigați</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="achievements-section">
+      <div class="section-heading">
+        <h2>Insigne</h2>
+        <span id="achievementCount" class="muted">0 / 6 deblocate</span>
+      </div>
+      <div id="achievementGrid" class="achievement-grid"></div>
     </section>
 
     <section class="progress-card">
@@ -184,6 +237,17 @@
 
     <p id="message" class="message" role="status" aria-live="polite"></p>
   </main>
+
+
+  <dialog id="levelUpDialog" class="level-up-dialog">
+    <div class="level-up-card">
+      <span class="level-up-spark">✦</span>
+      <p class="eyebrow">Ai evoluat</p>
+      <h2>LEVEL UP!</h2>
+      <p id="levelUpMessage">Ai ajuns la nivelul următor.</p>
+      <button id="closeLevelUp" class="primary-button" type="button">Continuă aventura</button>
+    </div>
+  </dialog>
 
   <dialog id="parentDialog" class="parent-dialog">
     <form method="dialog" class="dialog-card">

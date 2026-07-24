@@ -26,6 +26,43 @@ const pinError = document.getElementById("pinError");
 const pendingList = document.getElementById("pendingList");
 const parentHistory = document.getElementById("parentHistory");
 
+const levelNumber = document.getElementById("levelNumber");
+const levelTitle = document.getElementById("levelTitle");
+const levelProgressText = document.getElementById("levelProgressText");
+const levelProgressBar = document.getElementById("levelProgressBar");
+const currentStreak = document.getElementById("currentStreak");
+const bestStreak = document.getElementById("bestStreak");
+const totalMissions = document.getElementById("totalMissions");
+const lifetimeSpark = document.getElementById("lifetimeSpark");
+const achievementCount = document.getElementById("achievementCount");
+const achievementGrid = document.getElementById("achievementGrid");
+const levelUpDialog = document.getElementById("levelUpDialog");
+const levelUpMessage = document.getElementById("levelUpMessage");
+const closeLevelUp = document.getElementById("closeLevelUp");
+
+const LEVELS = [
+  { threshold: 0, title: "Începător curajos" },
+  { threshold: 500, title: "Aprinzător de Spark" },
+  { threshold: 1200, title: "Luptător consecvent" },
+  { threshold: 2200, title: "Maestru al misiunilor" },
+  { threshold: 3500, title: "Campion în devenire" },
+  { threshold: 5000, title: "Erou NeverQuit" },
+  { threshold: 7000, title: "Legendă disciplinată" },
+  { threshold: 9500, title: "Maestru NeverQuit" },
+  { threshold: 12500, title: "Campion legendar" },
+  { threshold: 16000, title: "Nivel suprem" },
+];
+
+const ACHIEVEMENTS = [
+  { id: "first-mission", emoji: "⚡", name: "Primul Spark", description: "Termină prima misiune.", test: (s) => s.stats.totalMissions >= 1 },
+  { id: "first-day", emoji: "🥇", name: "Zi de campion", description: "Termină toate misiunile într-o zi.", test: (s) => s.completedDays.length >= 1 },
+  { id: "spark-500", emoji: "💎", name: "Rezervă de energie", description: "Câștigă 500 Spark în total.", test: (s) => s.totalEarned >= 500 },
+  { id: "streak-3", emoji: "🔥", name: "Foc aprins", description: "Ajunge la un streak de 3 zile.", test: (s) => getBestStreak(s.completedDays) >= 3 },
+  { id: "missions-25", emoji: "🎯", name: "Vânător de misiuni", description: "Termină 25 de misiuni.", test: (s) => s.stats.totalMissions >= 25 },
+  { id: "rewards-5", emoji: "🏆", name: "Strategul recompenselor", description: "Primește aprobarea pentru 5 recompense.", test: (s) => s.requests.filter((r) => r.status === "approved").length >= 5 },
+];
+
+
 let parentUnlocked = false;
 
 function getTodayKey() {
@@ -55,6 +92,13 @@ function createDefaultState() {
     dailyCompleted: {},
     requests: [],
     parentPin: null,
+    totalEarned: 0,
+    completedDays: [],
+    unlockedAchievements: [],
+    lastKnownLevel: 1,
+    stats: {
+      totalMissions: 0,
+    },
   };
 }
 
@@ -70,6 +114,13 @@ function loadState() {
       ...saved,
       dailyCompleted: saved.dailyCompleted || {},
       requests: Array.isArray(saved.requests) ? saved.requests : [],
+      totalEarned: Number.isFinite(saved.totalEarned) ? saved.totalEarned : Math.max(0, Number(saved.wallet) || 0),
+      completedDays: Array.isArray(saved.completedDays) ? saved.completedDays : [],
+      unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : [],
+      lastKnownLevel: Number.isFinite(saved.lastKnownLevel) ? saved.lastKnownLevel : 1,
+      stats: {
+        totalMissions: Number(saved.stats?.totalMissions) || 0,
+      },
     };
   } catch (error) {
     return createDefaultState();
@@ -89,6 +140,157 @@ function rolloverDayIfNeeded() {
     state.dailyCompleted = {};
     saveState();
   }
+}
+
+
+function dateKeyToUtc(dateKey) {
+  const [year, month, day] = dateKey.split("-").map(Number);
+  return Date.UTC(year, month - 1, day);
+}
+
+function getStreaks(completedDays) {
+  const days = [...new Set(completedDays)].sort();
+  if (days.length === 0) {
+    return { current: 0, best: 0 };
+  }
+
+  let best = 1;
+  let running = 1;
+
+  for (let index = 1; index < days.length; index += 1) {
+    const difference = (dateKeyToUtc(days[index]) - dateKeyToUtc(days[index - 1])) / 86400000;
+    if (difference === 1) {
+      running += 1;
+      best = Math.max(best, running);
+    } else {
+      running = 1;
+    }
+  }
+
+  const today = getTodayKey();
+  const yesterdayDate = new Date();
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+  const yesterday = [
+    yesterdayDate.getFullYear(),
+    String(yesterdayDate.getMonth() + 1).padStart(2, "0"),
+    String(yesterdayDate.getDate()).padStart(2, "0"),
+  ].join("-");
+
+  const lastDay = days[days.length - 1];
+  if (lastDay !== today && lastDay !== yesterday) {
+    return { current: 0, best };
+  }
+
+  let current = 1;
+  for (let index = days.length - 1; index > 0; index -= 1) {
+    const difference = (dateKeyToUtc(days[index]) - dateKeyToUtc(days[index - 1])) / 86400000;
+    if (difference !== 1) break;
+    current += 1;
+  }
+
+  return { current, best };
+}
+
+function getBestStreak(completedDays) {
+  return getStreaks(completedDays).best;
+}
+
+function getLevelInfo(totalEarned) {
+  let index = LEVELS.length - 1;
+  for (let i = 0; i < LEVELS.length; i += 1) {
+    const next = LEVELS[i + 1];
+    if (!next || totalEarned < next.threshold) {
+      index = i;
+      break;
+    }
+  }
+
+  const current = LEVELS[index];
+  const next = LEVELS[index + 1] || null;
+  const level = index + 1;
+  const progress = next
+    ? Math.max(0, Math.min(100, ((totalEarned - current.threshold) / (next.threshold - current.threshold)) * 100))
+    : 100;
+
+  return { level, current, next, progress };
+}
+
+function showLevelUp(levelInfo) {
+  if (!levelUpDialog || levelUpDialog.open) return;
+  levelUpMessage.textContent = `Ai ajuns la Level ${levelInfo.level}: ${levelInfo.current.title}.`;
+  levelUpDialog.showModal();
+}
+
+function createSparkBurst(points, card) {
+  const rect = card.getBoundingClientRect();
+  const burst = document.createElement("span");
+  burst.className = "spark-burst";
+  burst.textContent = `+${points} ✦`;
+  burst.style.left = `${rect.right - 72}px`;
+  burst.style.top = `${rect.top + 20}px`;
+  document.body.appendChild(burst);
+  window.setTimeout(() => burst.remove(), 950);
+}
+
+function recordCompletedDayIfNeeded() {
+  const allCompleted = missionCards.every((card) => Boolean(state.dailyCompleted[card.dataset.id]));
+  const today = getTodayKey();
+
+  if (allCompleted && !state.completedDays.includes(today)) {
+    state.completedDays.push(today);
+    return true;
+  }
+
+  if (!allCompleted && state.completedDays.includes(today)) {
+    state.completedDays = state.completedDays.filter((day) => day !== today);
+  }
+
+  return false;
+}
+
+function updateAchievements() {
+  const newlyUnlocked = [];
+
+  ACHIEVEMENTS.forEach((achievement) => {
+    if (achievement.test(state) && !state.unlockedAchievements.includes(achievement.id)) {
+      state.unlockedAchievements.push(achievement.id);
+      newlyUnlocked.push(achievement);
+    }
+  });
+
+  return newlyUnlocked;
+}
+
+function renderRpg() {
+  const levelInfo = getLevelInfo(state.totalEarned);
+  const streaks = getStreaks(state.completedDays);
+
+  levelNumber.textContent = levelInfo.level;
+  levelTitle.textContent = levelInfo.current.title;
+  levelProgressBar.style.width = `${levelInfo.progress}%`;
+
+  if (levelInfo.next) {
+    levelProgressText.textContent = `${state.totalEarned} / ${levelInfo.next.threshold} Spark`;
+  } else {
+    levelProgressText.textContent = `${state.totalEarned} Spark · nivel maxim`;
+  }
+
+  currentStreak.textContent = streaks.current;
+  bestStreak.textContent = streaks.best;
+  totalMissions.textContent = state.stats.totalMissions;
+  lifetimeSpark.textContent = state.totalEarned;
+
+  achievementCount.textContent = `${state.unlockedAchievements.length} / ${ACHIEVEMENTS.length} deblocate`;
+  achievementGrid.innerHTML = ACHIEVEMENTS.map((achievement) => {
+    const unlocked = state.unlockedAchievements.includes(achievement.id);
+    return `
+      <article class="achievement-card ${unlocked ? "unlocked" : ""}">
+        <span class="achievement-emoji">${unlocked ? achievement.emoji : "🔒"}</span>
+        <strong>${achievement.name}</strong>
+        <small>${achievement.description}</small>
+      </article>
+    `;
+  }).join("");
 }
 
 function pendingRequests() {
@@ -244,6 +446,7 @@ function render() {
   pendingBadge.textContent = pendingCount;
   pendingBadge.classList.toggle("hidden", pendingCount === 0);
 
+  renderRpg();
   renderRewards();
   renderHistory(publicHistory);
   renderHistory(parentHistory, 20);
@@ -261,12 +464,32 @@ function handleMissionChange(card, checkbox) {
   const missionId = card.dataset.id;
   const points = Number(card.dataset.points);
   const wasCompleted = Boolean(state.dailyCompleted[missionId]);
+  const previousLevel = getLevelInfo(state.totalEarned).level;
 
   if (checkbox.checked && !wasCompleted) {
     state.dailyCompleted[missionId] = true;
     state.wallet += points;
+    state.totalEarned += points;
+    state.stats.totalMissions += 1;
+
+    const completedToday = recordCompletedDayIfNeeded();
+    const newlyUnlocked = updateAchievements();
+    const newLevelInfo = getLevelInfo(state.totalEarned);
+
+    state.lastKnownLevel = newLevelInfo.level;
     saveState();
-    setMessage(`Misiune completată: +${points} Spark.`);
+    createSparkBurst(points, card);
+
+    if (newLevelInfo.level > previousLevel) {
+      showLevelUp(newLevelInfo);
+    } else if (newlyUnlocked.length > 0) {
+      setMessage(`Insignă nouă: ${newlyUnlocked[0].name}!`);
+    } else if (completedToday) {
+      setMessage("Zi completă de campion! Streak-ul continuă.");
+    } else {
+      setMessage(`Misiune completată: +${points} Spark.`);
+    }
+
     render();
     return;
   }
@@ -280,6 +503,14 @@ function handleMissionChange(card, checkbox) {
 
     state.dailyCompleted[missionId] = false;
     state.wallet -= points;
+    state.totalEarned = Math.max(0, state.totalEarned - points);
+    state.stats.totalMissions = Math.max(0, state.stats.totalMissions - 1);
+    recordCompletedDayIfNeeded();
+    state.unlockedAchievements = state.unlockedAchievements.filter((id) => {
+      const achievement = ACHIEVEMENTS.find((item) => item.id === id);
+      return achievement ? achievement.test(state) : false;
+    });
+    state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
     saveState();
     setMessage(`Misiunea a fost debifată: -${points} Spark.`);
     render();
@@ -440,10 +671,23 @@ resetButton.addEventListener("click", () => {
   }
 
   state.wallet -= pointsToday;
+  state.totalEarned = Math.max(0, state.totalEarned - pointsToday);
+  state.stats.totalMissions = Math.max(0, state.stats.totalMissions - checkedCards.length);
   state.dailyCompleted = {};
+  recordCompletedDayIfNeeded();
+  state.unlockedAchievements = state.unlockedAchievements.filter((id) => {
+    const achievement = ACHIEVEMENTS.find((item) => item.id === id);
+    return achievement ? achievement.test(state) : false;
+  });
+  state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
   saveState();
   setMessage("Misiunile zilei au fost resetate.");
   render();
+});
+
+closeLevelUp.addEventListener("click", () => levelUpDialog.close());
+levelUpDialog.addEventListener("click", (event) => {
+  if (event.target === levelUpDialog) levelUpDialog.close();
 });
 
 parentButton.addEventListener("click", openParentDialog);
@@ -456,6 +700,9 @@ pinInput.addEventListener("keydown", (event) => {
 });
 
 rolloverDayIfNeeded();
+updateAchievements();
+state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
+saveState();
 render();
 
 
