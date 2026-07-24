@@ -14,7 +14,7 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=5.5.0" rel="stylesheet"/>
+<link href="styles.css?v=5.6.0" rel="stylesheet"/>
 </head>
 <body>
 <main class="app-shell">
@@ -47,7 +47,7 @@
 <section class="install-help hidden" id="installHelp">
 <strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
     </section>
-<section aria-label="Progres RPG" class="rpg-dashboard">
+<section aria-label="Progres RPG" class="rpg-dashboard app-view" data-view="missions">
 <article class="level-card">
 <div class="level-orb">
 <span class="level-caption">LEVEL</span>
@@ -89,14 +89,14 @@
 </article>
 </div>
 </section>
-<section class="achievements-section">
+<section class="achievements-section app-view" data-view="achievements">
 <div class="section-heading">
 <h2>Insigne</h2>
 <span class="muted" id="achievementCount">0 / 6 deblocate</span>
 </div>
 <div class="achievement-grid" id="achievementGrid"></div>
 </section>
-<section class="progress-card">
+<section class="progress-card app-view" data-view="missions">
 <div class="progress-row">
 <span>Progresul zilei</span>
 <strong id="progressText">0 / 5 misiuni</strong>
@@ -105,7 +105,7 @@
 <div class="progress-bar" id="progressBar"></div>
 </div>
 </section>
-<section>
+<section class="app-view" data-view="missions">
 <div class="section-heading">
 <h2>Misiuni</h2>
 <button class="ghost-button" id="resetButton" type="button">Resetează ziua</button>
@@ -157,7 +157,7 @@
 </div></div></article>
 </div>
 </section>
-<section class="rewards-section">
+<section class="rewards-section app-view" data-view="rewards">
 <div class="section-heading">
 <h2>Recompense</h2>
 <span class="muted">Necesită aprobarea părintelui</span>
@@ -195,7 +195,7 @@
 </article>
 </div>
 </section>
-<section class="history-section">
+<section class="history-section app-view" data-view="rewards">
 <div class="section-heading">
 <h2>Istoric recompense</h2>
 <span class="muted">Ultimele cereri</span>
@@ -204,8 +204,21 @@
 <p class="empty-state">Nu există încă cereri.</p>
 </div>
 </section>
+<section class="friends-section app-view" data-view="friends">
+<div class="section-heading"><h2>Prieteni</h2><span class="muted">În pregătire</span></div>
+<article class="friends-card">
+<div class="friends-otto otto-smile-face"><span class="otto-ear left"></span><span class="otto-ear right"></span><span class="otto-eye left"></span><span class="otto-eye right"></span><span class="otto-nose"></span><span class="otto-smile"></span></div>
+<div><h3>Echipa NeverQuit</h3><p>Într-o versiune viitoare, Iosif va putea adăuga prieteni aprobați de părinte, vedea progresul lor și participa la provocări sigure.</p></div>
+</article>
+</section>
 <p aria-live="polite" class="message" id="message" role="status"></p>
 </main>
+<nav class="bottom-nav" aria-label="Navigație principală">
+<button class="bottom-nav-button active" data-target-view="missions" type="button"><span class="nav-icon">🎯</span><span>Misiuni</span></button>
+<button class="bottom-nav-button" data-target-view="achievements" type="button"><span class="nav-icon">🏅</span><span>Insigne</span><span class="nav-notification hidden" id="achievementNavBadge">0</span></button>
+<button class="bottom-nav-button" data-target-view="rewards" type="button"><span class="nav-icon">🎁</span><span>Recompense</span><span class="nav-notification hidden" id="rewardNavBadge">0</span></button>
+<button class="bottom-nav-button" data-target-view="friends" type="button"><span class="nav-icon">👥</span><span>Prieteni</span></button>
+</nav>
 <dialog class="task-help-dialog" id="taskHelpDialog">
 <div class="task-help-card">
 <button aria-label="Închide" class="close-button" id="closeTaskHelp" type="button">×</button>
@@ -227,7 +240,7 @@
 <span id="celebrationLevel">⭐ Nivel 1</span>
 </div>
 <div class="celebration-otto">
-<span aria-hidden="true" class="celebration-otto-avatar">🤖</span>
+<span aria-hidden="true" class="celebration-otto-avatar otto-smile-face"><span class="otto-ear left"></span><span class="otto-ear right"></span><span class="otto-eye left"></span><span class="otto-eye right"></span><span class="otto-nose"></span><span class="otto-smile"></span></span>
 <p id="celebrationMessage">Încă un pas. Campionii nu renunță.</p>
 </div>
 <small class="celebration-saved">Salvat automat ✓</small>
@@ -267,6 +280,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=5.5.0"></script>
+<script src="app.js?v=5.6.0"></script>
 </body>
 </html>

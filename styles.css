@@ -1111,3 +1111,97 @@ h1 {
   .task-toggle { grid-template-columns: 27px minmax(0,1fr); gap: 9px; }
   .task-name { font-size: .95rem; }
 }
+
+/* V5.6 — bottom navigation, notifications and Otto face */
+body { padding-bottom: 92px; }
+.app-view[data-view]:not([data-view="missions"]) { display: none; }
+body[data-active-view="achievements"] .app-view[data-view="missions"],
+body[data-active-view="rewards"] .app-view[data-view="missions"],
+body[data-active-view="friends"] .app-view[data-view="missions"] { display: none; }
+body[data-active-view="achievements"] .app-view[data-view="achievements"],
+body[data-active-view="rewards"] .app-view[data-view="rewards"],
+body[data-active-view="friends"] .app-view[data-view="friends"] { display: block; }
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 50;
+  width: min(100%, 760px);
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  padding: 8px max(8px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  border-top: 1px solid rgba(148,163,184,.2);
+  background: rgba(2,6,23,.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 -12px 35px rgba(2,6,23,.55);
+}
+.bottom-nav-button {
+  position: relative;
+  min-width: 0;
+  padding: 7px 3px;
+  border: 0;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  color: #94a3b8;
+  background: transparent;
+  font-size: .69rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.bottom-nav-button.active { color: #f8fafc; background: rgba(37,99,235,.22); }
+.nav-icon { font-size: 1.28rem; line-height: 1; }
+.nav-notification {
+  position: absolute;
+  top: 2px;
+  right: calc(50% - 24px);
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #020617;
+  border-radius: 999px;
+  color: white;
+  background: #ef4444;
+  font-size: .64rem;
+  line-height: 1;
+  font-weight: 900;
+}
+.friends-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid rgba(96,165,250,.22);
+  border-radius: 20px;
+  background: rgba(15,23,42,.72);
+}
+.friends-card h3 { margin: 0 0 5px; }
+.friends-card p { margin: 0; color: #cbd5e1; line-height: 1.45; }
+.otto-smile-face {
+  position: relative;
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border: 3px solid rgba(191,219,254,.8);
+  border-radius: 45% 45% 48% 48%;
+  background: linear-gradient(155deg,#93c5fd,#2563eb 62%,#1d4ed8);
+  box-shadow: inset 0 -7px 0 rgba(15,23,42,.18), 0 8px 22px rgba(37,99,235,.25);
+}
+.otto-ear { position:absolute; top:-7px; width:18px; height:18px; border-radius:50%; background:#60a5fa; border:3px solid rgba(191,219,254,.75); z-index:-1; }
+.otto-ear.left { left:2px; } .otto-ear.right { right:2px; }
+.otto-eye { position:absolute; top:19px; width:6px; height:8px; border-radius:50%; background:#07132f; }
+.otto-eye.left { left:16px; } .otto-eye.right { right:16px; }
+.otto-nose { position:absolute; left:50%; top:29px; width:8px; height:6px; transform:translateX(-50%); border-radius:50%; background:#07132f; }
+.otto-smile { position:absolute; left:50%; top:34px; width:22px; height:11px; transform:translateX(-50%); border-bottom:3px solid #07132f; border-radius:0 0 18px 18px; }
+.celebration-otto-avatar.otto-smile-face { width:62px; height:62px; font-size:0; }
+.friends-otto { width:70px; height:70px; }
+@media (max-width: 420px) {
+  .bottom-nav-button { font-size: .63rem; }
+  .nav-icon { font-size: 1.18rem; }
+  .friends-card { align-items:flex-start; }
+}

@@ -1,4 +1,5 @@
-const STORAGE_KEY = "neverquit_state_v3_tasks";
+const STORAGE_KEY = "neverquit_state_v4_tasks";
+const PREVIOUS_STORAGE_KEYS = ["neverquit_state_v3_tasks", "neverquit_state_v2"];
 const LEGACY_STORAGE_KEY = "neverquit_state_v2";
 
 const missionCards = [...document.querySelectorAll(".mission-card")];
@@ -53,6 +54,9 @@ const taskHelpTitle = document.getElementById("taskHelpTitle");
 const taskHelpText = document.getElementById("taskHelpText");
 const closeTaskHelp = document.getElementById("closeTaskHelp");
 const closeTaskHelpBottom = document.getElementById("closeTaskHelpBottom");
+const bottomNavButtons = [...document.querySelectorAll(".bottom-nav-button")];
+const achievementNavBadge = document.getElementById("achievementNavBadge");
+const rewardNavBadge = document.getElementById("rewardNavBadge");
 
 
 const LEVELS = [
@@ -110,6 +114,8 @@ function createDefaultState() {
     totalEarned: 0,
     completedDays: [],
     unlockedAchievements: [],
+    unreadAchievementIds: [],
+    seenAvailableRewardIds: [],
     lastKnownLevel: 1,
     stats: {
       totalMissions: 0,
@@ -119,7 +125,8 @@ function createDefaultState() {
 
 function loadState() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const savedRaw = localStorage.getItem(STORAGE_KEY) || PREVIOUS_STORAGE_KEYS.map((key) => localStorage.getItem(key)).find(Boolean);
+    const saved = savedRaw ? JSON.parse(savedRaw) : null;
     if (saved && typeof saved === "object") {
       return {
         ...createDefaultState(), ...saved,
@@ -128,6 +135,8 @@ function loadState() {
         totalEarned: Number.isFinite(saved.totalEarned) ? saved.totalEarned : Math.max(0, Number(saved.wallet) || 0),
         completedDays: Array.isArray(saved.completedDays) ? saved.completedDays : [],
         unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : [],
+        unreadAchievementIds: Array.isArray(saved.unreadAchievementIds) ? saved.unreadAchievementIds : [],
+        seenAvailableRewardIds: Array.isArray(saved.seenAvailableRewardIds) ? saved.seenAvailableRewardIds : [],
         stats: { totalMissions: Number(saved.stats?.totalMissions) || 0 },
       };
     }
@@ -271,6 +280,7 @@ function updateAchievements() {
   ACHIEVEMENTS.forEach((achievement) => {
     if (achievement.test(state) && !state.unlockedAchievements.includes(achievement.id)) {
       state.unlockedAchievements.push(achievement.id);
+      if (!state.unreadAchievementIds.includes(achievement.id)) state.unreadAchievementIds.push(achievement.id);
       newlyUnlocked.push(achievement);
     }
   });
@@ -406,6 +416,41 @@ function renderPendingList() {
   });
 }
 
+function getAvailableRewardIds() {
+  const spendable = availableToRequest();
+  return rewardCards
+    .filter((card) => spendable >= Number(card.dataset.cost) && !(card.dataset.id === "ps" && psUsedToday()))
+    .map((card) => card.dataset.id);
+}
+
+function getNewAvailableRewardIds() {
+  const available = getAvailableRewardIds();
+  return available.filter((id) => !state.seenAvailableRewardIds.includes(id));
+}
+
+function renderBottomNotifications() {
+  const achievementCountUnread = state.unreadAchievementIds.length;
+  achievementNavBadge.textContent = achievementCountUnread;
+  achievementNavBadge.classList.toggle("hidden", achievementCountUnread === 0);
+
+  const newRewards = getNewAvailableRewardIds();
+  rewardNavBadge.textContent = newRewards.length;
+  rewardNavBadge.classList.toggle("hidden", newRewards.length === 0);
+}
+
+function switchView(view) {
+  document.body.dataset.activeView = view;
+  bottomNavButtons.forEach((button) => button.classList.toggle("active", button.dataset.targetView === view));
+
+  if (view === "achievements") state.unreadAchievementIds = [];
+  if (view === "rewards") {
+    state.seenAvailableRewardIds = [...new Set([...state.seenAvailableRewardIds, ...getAvailableRewardIds()])];
+  }
+  saveState();
+  renderBottomNotifications();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function renderRewards() {
   const spendable = availableToRequest();
 
@@ -437,7 +482,8 @@ function render() {
   sparkTotal.textContent = state.wallet;
   reservedText.textContent = reserved > 0 ? `${reserved} rezervați în cereri` : "";
   progressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
-  progressBar.style.width = `${(completedTasks.length / taskChecks.length) * 100}%`;
+  progressBar.style.width = `${taskChecks.length ? (completedTasks.length / taskChecks.length) * 100 : 0}%`;
+  progressBar.setAttribute("aria-valuenow", String(completedTasks.length));
 
   todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
     weekday: "long",
@@ -450,8 +496,10 @@ function render() {
     const done = checks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
     const percent = checks.length ? (done / checks.length) * 100 : 0;
     card.classList.toggle("completed", done === checks.length);
-    card.querySelector(".card-progress-bar").style.width = `${percent}%`;
-    card.querySelector(".card-progress-text").textContent = `${done} / ${checks.length} bifate`;
+    const cardBar = card.querySelector(".card-progress-bar");
+    const cardText = card.querySelector(".card-progress-text");
+    if (cardBar) cardBar.style.width = `${percent}%`;
+    if (cardText) cardText.textContent = `${done} / ${checks.length} bifate`;
   });
 
   const pendingCount = pendingRequests().length;
@@ -462,6 +510,7 @@ function render() {
   renderRewards();
   renderHistory(publicHistory);
   renderHistory(parentHistory, 20);
+  renderBottomNotifications();
 
   if (parentUnlocked) {
     renderPendingList();
@@ -525,6 +574,7 @@ function handleTaskChange(card, checkbox) {
     if (cardWasComplete) state.stats.totalMissions = Math.max(0, state.stats.totalMissions - 1);
     recordCompletedDayIfNeeded();
     state.unlockedAchievements = state.unlockedAchievements.filter((id) => { const a=ACHIEVEMENTS.find((x)=>x.id===id); return a ? a.test(state) : false; });
+    state.unreadAchievementIds = state.unreadAchievementIds.filter((id) => state.unlockedAchievements.includes(id));
     state.lastKnownLevel = getLevelInfo(state.totalEarned).level; saveState(); setMessage("Activitatea a fost debifată."); render();
   }
 }
@@ -652,7 +702,18 @@ function handlePinAction() {
 
 taskChecks.forEach((checkbox) => {
   const card = checkbox.closest(".mission-card");
-  checkbox.addEventListener("change", () => handleTaskChange(card, checkbox));
+  checkbox.addEventListener("change", () => {
+    handleTaskChange(card, checkbox);
+  });
+});
+
+// Fallback pentru unele WebView-uri Android: asigură declanșarea la atingerea rândului.
+document.querySelectorAll(".task-toggle").forEach((toggle) => {
+  toggle.addEventListener("click", (event) => {
+    const checkbox = toggle.querySelector(".task-check");
+    if (!checkbox || event.target === checkbox) return;
+    // Comportamentul implicit al label-ului schimbă checkbox-ul; nu dublăm apăsarea.
+  });
 });
 helpButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
@@ -700,6 +761,7 @@ resetButton.addEventListener("click", () => {
     const achievement = ACHIEVEMENTS.find((item) => item.id === id);
     return achievement ? achievement.test(state) : false;
   });
+  state.unreadAchievementIds = state.unreadAchievementIds.filter((id) => state.unlockedAchievements.includes(id));
   state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
   saveState();
   setMessage("Misiunile zilei au fost resetate.");
@@ -729,6 +791,12 @@ pinInput.addEventListener("keydown", (event) => {
     handlePinAction();
   }
 });
+
+bottomNavButtons.forEach((button) => {
+  button.addEventListener("click", () => switchView(button.dataset.targetView));
+});
+
+document.body.dataset.activeView = "missions";
 
 rolloverDayIfNeeded();
 updateAchievements();

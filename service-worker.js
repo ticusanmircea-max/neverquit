@@ -1,9 +1,9 @@
-const CACHE_NAME = "neverquit-v5-5-reliable-progress";
+const CACHE_NAME = "neverquit-v5-6-bottom-nav";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=5.5.0",
-  "./app.js?v=5.5.0",
+  "./styles.css?v=5.6.0",
+  "./app.js?v=5.6.0",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png"
