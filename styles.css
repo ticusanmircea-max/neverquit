@@ -1410,3 +1410,103 @@ body { padding-top: 82px; }
   .welcome-otto { width:72px; height:72px; flex-basis:72px; }
   .welcome-copy p:last-child { font-size:.94rem; }
 }
+
+/* V6.2 — task layout polish: one clean row, no overlaps */
+.task-list {
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.task-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  align-items: center !important;
+  column-gap: 10px !important;
+  min-height: 64px;
+  padding: 9px 10px !important;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.task-toggle {
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 11px !important;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+}
+
+.task-box {
+  width: 30px !important;
+  height: 30px !important;
+  flex: 0 0 30px;
+  border-radius: 9px;
+}
+
+.task-name {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  font-size: 1.04rem !important;
+  line-height: 1.2 !important;
+  font-weight: 760;
+}
+
+.help-button {
+  justify-self: end;
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.task-check:checked ~ .task-name {
+  opacity: .72;
+  color: #b8c7bc;
+  text-decoration-color: rgba(134,239,172,.72);
+}
+
+.optional-task .task-name {
+  color: #ffe09a;
+}
+
+.card-progress {
+  margin-top: 11px;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 430px) {
+  .task-row {
+    grid-template-columns: minmax(0, 1fr) 38px !important;
+    min-height: 60px;
+    padding: 8px 9px !important;
+    column-gap: 8px !important;
+  }
+  .task-toggle {
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    gap: 9px !important;
+  }
+  .task-box {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .task-name {
+    font-size: 1rem !important;
+  }
+  .help-button {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+  }
+}

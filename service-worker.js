@@ -2,8 +2,8 @@ const CACHE_NAME = "neverquit-v5-9-complete-mission-unlock";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=6.1.0",
-  "./app.js?v=6.1.0",
+  "./styles.css?v=6.2.0",
+  "./app.js?v=6.2.0",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
