@@ -65,6 +65,7 @@ const topLevel = document.getElementById("topLevel");
 const topProgress = document.getElementById("topProgress");
 const topCurrentStreak = document.getElementById("topCurrentStreak");
 const topBestStreak = document.getElementById("topBestStreak");
+const topBestVisible = document.getElementById("topBestVisible");
 const topSparkDetail = document.getElementById("topSparkDetail");
 const topLevelDetail = document.getElementById("topLevelDetail");
 const topProgressText = document.getElementById("topProgressText");
@@ -578,12 +579,13 @@ function render() {
   if (topProgress) topProgress.textContent = `${dayPercent}%`;
   if (topCurrentStreak) topCurrentStreak.textContent = streakInfo.current;
   if (topBestStreak) topBestStreak.textContent = streakInfo.best;
+  if (topBestVisible) topBestVisible.textContent = streakInfo.best;
   if (topSparkDetail) topSparkDetail.textContent = state.wallet;
   if (topLevelDetail) topLevelDetail.textContent = `${topLevelInfo.level} · ${topLevelInfo.current.title}`;
   if (topProgressText) topProgressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
   if (topProgressBar) topProgressBar.style.width = `${dayPercent}%`;
 
-  todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
+  if (todayLabel) todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
     weekday: "long",
     day: "numeric",
     month: "long",

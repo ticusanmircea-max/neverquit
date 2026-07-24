@@ -1510,3 +1510,81 @@ body { padding-top: 82px; }
     height: 36px !important;
   }
 }
+
+/* V6.3 — restored game hierarchy, fixed brand + score menu */
+body { padding-top: 158px !important; }
+.game-brandbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1210;
+  min-height: 68px;
+  padding: max(10px, env(safe-area-inset-top)) 16px 9px;
+  background: #0c121f;
+  border-bottom: 1px solid rgba(148,163,184,.12);
+}
+.brand-title-row {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand-name { margin:0; color:#f8fafc; font-size:1.48rem; line-height:1; font-weight:950; letter-spacing:.06em; }
+.brand-motto { margin:5px 0 0; color:#f6c453; font-size:.86rem; font-weight:800; }
+.brand-date { color:#cbd5e1; font-size:.83rem; font-weight:700; text-align:right; text-transform:capitalize; white-space:nowrap; }
+.compact-topbar { top:68px !important; padding:7px 12px 9px !important; }
+.topbar-summary {
+  grid-template-columns: repeat(4,minmax(0,1fr)) auto !important;
+  min-height:68px !important;
+  gap:5px !important;
+  padding:7px 8px !important;
+}
+.topbar-metric { display:flex !important; justify-content:center; align-items:center; gap:7px !important; font-size:1rem !important; }
+.topbar-metric .metric-icon { font-size:1.42rem; line-height:1; }
+.topbar-metric > span:last-child { display:flex; flex-direction:column; align-items:flex-start; line-height:1.05; }
+.topbar-metric small { color:#9fb0c8; font-size:.63rem; font-weight:750; }
+.topbar-metric b { color:#fff; font-size:1.05rem !important; margin-top:3px; }
+.topbar-chevron { font-size:1.35rem !important; }
+.topbar-details { top:auto; }
+.compact-details { grid-template-columns:repeat(2,1fr) !important; }
+
+/* Restore the useful home sections; keep old duplicate blocks hidden. */
+.game-welcome { display:flex !important; margin-top:8px !important; margin-bottom:14px !important; }
+.level-home-card { display:flex !important; margin:0 0 14px !important; }
+.daily-progress-card { display:block !important; margin:0 0 16px !important; }
+.daily-progress-card .progress-row { margin-bottom:9px; }
+.daily-progress-card .progress-row span { font-weight:850; }
+.daily-progress-card .progress-track { height:12px; }
+.legacy-dashboard, .stat-grid, .hero, .otto-card, .action-row, .install-help { display:none !important; }
+.mission-sequence, .section-heading { display:none !important; }
+
+.level-home-card {
+  background:linear-gradient(145deg,#1c2942,#151f34);
+  border:1px solid rgba(246,196,83,.24);
+  box-shadow:0 10px 28px rgba(0,0,0,.2);
+}
+.level-home-card .level-details { min-width:0; }
+.level-home-card .level-progress-text { white-space:nowrap; }
+
+@media (max-width:520px) {
+  body { padding-top:154px !important; }
+  .game-brandbar { min-height:66px; padding-inline:13px; }
+  .compact-topbar { top:66px !important; padding-inline:8px !important; }
+  .brand-name { font-size:1.32rem; }
+  .brand-motto { font-size:.76rem; }
+  .brand-date { font-size:.72rem; max-width:115px; white-space:normal; line-height:1.15; }
+  .topbar-summary { min-height:66px !important; gap:2px !important; padding-inline:5px !important; }
+  .topbar-metric { gap:4px !important; }
+  .topbar-metric .metric-icon { font-size:1.22rem; }
+  .topbar-metric small { font-size:.56rem; }
+  .topbar-metric b { font-size:.96rem !important; }
+  .welcome-otto { width:78px !important; height:78px !important; flex-basis:78px !important; }
+  .level-home-card { align-items:center; gap:12px; padding:14px; }
+  .level-home-card .level-orb { width:66px; height:66px; flex-basis:66px; }
+  .level-home-card .level-heading { align-items:flex-start; gap:5px; }
+  .level-home-card .level-heading h2 { font-size:1.03rem; }
+  .level-home-card .level-progress-text { font-size:.75rem; }
+}

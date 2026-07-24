@@ -14,41 +14,57 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=6.2.0" rel="stylesheet"/>
+<link href="styles.css?v=6.3.0" rel="stylesheet"/>
 </head>
 <body>
 <main class="app-shell">
-<header class="compact-topbar" id="compactTopbar">
+<section aria-label="NeverQuit astăzi" class="game-brandbar"><div class="brand-title-row"><div><p class="brand-name">NEVERQUIT</p><p class="brand-motto">Fiecare pas aprinde un Spark.</p></div><time class="brand-date" id="todayLabel"></time></div></section><header class="compact-topbar" id="compactTopbar">
 <button aria-controls="topbarDetails" aria-expanded="false" class="topbar-summary" id="topbarToggle" type="button">
-<span class="topbar-metric">🔥 <b id="topStreak">0</b></span>
-<span class="topbar-metric">✦ <b id="topSpark">0</b></span>
-<span class="topbar-metric">⭐ <b id="topLevel">1</b></span>
-<span class="topbar-metric">📊 <b id="topProgress">0%</b></span>
+<span class="topbar-metric"><span class="metric-icon">🔥</span><span><small>Streak</small><b id="topStreak">0</b></span></span>
+<span class="topbar-metric"><span class="metric-icon">🏆</span><span><small>Record</small><b id="topBestVisible">0</b></span></span>
+<span class="topbar-metric"><span class="metric-icon">✦</span><span><small>Spark</small><b id="topSpark">0</b></span></span>
+<span class="topbar-metric"><span class="metric-icon">⭐</span><span><small>Nivel</small><b id="topLevel">1</b></span></span>
 <span aria-hidden="true" class="topbar-chevron">⌄</span>
 </button>
-<div class="topbar-details" hidden="" id="topbarDetails">
-<div class="topbar-detail-grid">
-<div><span>Streak</span><strong><span id="topCurrentStreak">0</span> zile</strong></div>
-<div><span>Record</span><strong><span id="topBestStreak">0</span> zile</strong></div>
-<div><span>Spark</span><strong id="topSparkDetail">0</strong></div>
-<div><span>Nivel</span><strong id="topLevelDetail">1</strong></div>
-<div class="topbar-progress-detail"><span>Progresul zilei</span><strong id="topProgressText">0 / 0</strong><div class="topbar-progress-track"><div id="topProgressBar"></div></div></div>
+<div class="topbar-details" hidden="" id="topbarDetails"><div class="topbar-detail-grid compact-details">
+<div><span>Streak actual</span><strong><span id="topCurrentStreak">0</span> zile</strong></div>
+<div><span>Record personal</span><strong><span id="topBestStreak">0</span> zile</strong></div>
 </div>
-<div class="topbar-actions">
-<button id="topParentButton" type="button">Zonă părinte</button>
-<button id="topResetButton" type="button">Resetează ziua</button>
-</div>
-</div>
+<div class="topbar-actions"><button id="topParentButton" type="button">Acces părinte</button><button id="topResetButton" type="button">Resetează ziua</button></div></div>
 </header>
-<section class="game-welcome" aria-label="Bun venit în NeverQuit">
-  <img class="welcome-otto" src="icons/otto-smile.svg?v=6.1.0" alt="Otto, vidra zâmbitoare"/>
-  <div class="welcome-copy">
-    <p class="eyebrow">NEVERQUIT</p>
-    <h1>Bună, Iosif!</h1>
-    <p id="welcomeMessage">Astăzi ai o singură provocare. Hai să o ducem până la capăt!</p>
-  </div>
-</section>
+<section aria-label="Bun venit în NeverQuit" class="game-welcome">
+<img alt="Otto, vidra zâmbitoare" class="welcome-otto" src="icons/otto-smile.svg?v=6.1.0"/>
+<div class="welcome-copy">
 
+<h1>Bună, Iosif!</h1>
+<p id="welcomeMessage">Astăzi ai o singură provocare. Hai să o ducem până la capăt!</p>
+</div>
+</section><article class="level-card level-home-card">
+<div class="level-orb">
+<span class="level-caption">LEVEL</span>
+<strong id="levelNumber">1</strong>
+</div>
+<div class="level-details">
+<div class="level-heading">
+<div>
+<p class="eyebrow">Drumul campionului</p>
+<h2 id="levelTitle">Începător curajos</h2>
+</div>
+<span class="level-progress-text" id="levelProgressText">0 / 500 Spark</span>
+</div>
+<div aria-label="Progres către nivelul următor" class="level-track">
+<div class="level-progress-bar" id="levelProgressBar"></div>
+</div>
+</div>
+</article><section class="progress-card daily-progress-card" data-view="missions">
+<div class="progress-row">
+<span>Progresul misiunilor de azi</span>
+<strong id="progressText">0 / 0 activități</strong>
+</div>
+<div aria-hidden="true" class="progress-track">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+</section>
 <header class="hero">
 <div>
 <p class="eyebrow">Misiunea de azi</p>
@@ -66,7 +82,7 @@
 </header>
 <section class="otto-card"><div class="otto-avatar">🦦</div><div><h3>Otto</h3><p id="ottoMessage">Salut, Iosif! Hai să construim încă o zi de campion!</p></div></section>
 <section class="action-row">
-<span class="date-label" id="todayLabel"></span>
+<span class="date-label" id="legacyTodayLabel"></span>
 <div class="top-actions">
 <button class="install-button hidden" id="installButton" type="button">Instalează</button>
 <button class="parent-button" id="parentButton" type="button">
@@ -78,25 +94,8 @@
 <section class="install-help hidden" id="installHelp">
 <strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
     </section>
-<section aria-label="Progres RPG" class="rpg-dashboard app-view" data-view="missions">
-<article class="level-card">
-<div class="level-orb">
-<span class="level-caption">LEVEL</span>
-<strong id="levelNumber">1</strong>
-</div>
-<div class="level-details">
-<div class="level-heading">
-<div>
-<p class="eyebrow">Drumul campionului</p>
-<h2 id="levelTitle">Începător curajos</h2>
-</div>
-<span class="level-progress-text" id="levelProgressText">0 / 500 Spark</span>
-</div>
-<div aria-label="Progres către nivelul următor" class="level-track">
-<div class="level-progress-bar" id="levelProgressBar"></div>
-</div>
-</div>
-</article>
+<section aria-label="Progres RPG" class="rpg-dashboard legacy-dashboard" data-view="missions">
+
 <div class="stat-grid">
 <article class="stat-card">
 <span class="stat-icon">🔥</span>
@@ -127,15 +126,7 @@
 </div>
 <div class="achievement-grid" id="achievementGrid"></div>
 </section>
-<section class="progress-card app-view" data-view="missions">
-<div class="progress-row">
-<span>Progresul zilei</span>
-<strong id="progressText">0 / 5 misiuni</strong>
-</div>
-<div aria-hidden="true" class="progress-track">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-</section>
+
 <section class="app-view" data-view="missions">
 <div class="section-heading">
 <h2>Misiuni</h2>
@@ -316,6 +307,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=6.0.0"></script>
+<script src="app.js?v=6.3.0"></script>
 </body>
 </html>
