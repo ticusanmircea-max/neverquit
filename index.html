@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>NeverQuit — Ziua 2</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Misiunea de azi</p>
+        <h1>NEVERQUIT</h1>
+        <p class="subtitle">Fiecare pas aprinde un Spark.</p>
+      </div>
+
+      <section class="spark-panel" aria-label="Sold Spark">
+        <span class="spark-icon">✦</span>
+        <div>
+          <span id="sparkTotal" class="spark-total">0</span>
+          <span class="spark-label">Spark disponibili</span>
+          <small id="reservedText" class="reserved-text"></small>
+        </div>
+      </section>
+    </header>
+
+    <section class="action-row">
+      <span id="todayLabel" class="date-label"></span>
+      <button id="parentButton" class="parent-button" type="button">
+        Zonă părinte
+        <span id="pendingBadge" class="badge hidden">0</span>
+      </button>
+    </section>
+
+    <section class="progress-card">
+      <div class="progress-row">
+        <span>Progresul zilei</span>
+        <strong id="progressText">0 / 5 misiuni</strong>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <h2>Misiuni</h2>
+        <button id="resetButton" class="ghost-button" type="button">Resetează ziua</button>
+      </div>
+
+      <div id="missions" class="mission-list">
+        <article class="mission-card" data-id="start" data-points="10">
+          <label>
+            <input type="checkbox" class="mission-check" />
+            <span class="checkmark"></span>
+            <span class="mission-content">
+              <strong>Startul campionului</strong>
+              <small>Pat, igienă, mic dejun și alegerea ordinii</small>
+            </span>
+            <span class="reward">+10 ✦</span>
+          </label>
+        </article>
+
+        <article class="mission-card" data-id="mind" data-points="40">
+          <label>
+            <input type="checkbox" class="mission-check" />
+            <span class="checkmark"></span>
+            <span class="mission-content">
+              <strong>Mintea strategului</strong>
+              <small>Două ore de teme, citit, Lego, desen sau proiect</small>
+            </span>
+            <span class="reward">+40 ✦</span>
+          </label>
+        </article>
+
+        <article class="mission-card" data-id="body" data-points="20">
+          <label>
+            <input type="checkbox" class="mission-check" />
+            <span class="checkmark"></span>
+            <span class="mission-content">
+              <strong>Corpul campionului</strong>
+              <small>20 flotări, 20 genuflexiuni, 20 abdomene și mișcare</small>
+            </span>
+            <span class="reward">+20 ✦</span>
+          </label>
+        </article>
+
+        <article class="mission-card" data-id="team" data-points="15">
+          <label>
+            <input type="checkbox" class="mission-check" />
+            <span class="checkmark"></span>
+            <span class="mission-content">
+              <strong>Echipa</strong>
+              <small>Timp cu părinții și un gest de ajutor sau încurajare</small>
+            </span>
+            <span class="reward">+15 ✦</span>
+          </label>
+        </article>
+
+        <article class="mission-card" data-id="finish" data-points="15">
+          <label>
+            <input type="checkbox" class="mission-check" />
+            <span class="checkmark"></span>
+            <span class="mission-content">
+              <strong>Închiderea zilei</strong>
+              <small>Ordine, igienă, ecrane oprite și planul pentru mâine</small>
+            </span>
+            <span class="reward">+15 ✦</span>
+          </label>
+        </article>
+      </div>
+    </section>
+
+    <section class="rewards-section">
+      <div class="section-heading">
+        <h2>Recompense</h2>
+        <span class="muted">Necesită aprobarea părintelui</span>
+      </div>
+
+      <div class="reward-grid">
+        <article class="reward-card" data-id="ps" data-cost="60">
+          <span class="reward-emoji">🎮</span>
+          <h3>1 oră PS</h3>
+          <p>60 Spark · maximum o dată pe zi</p>
+          <button type="button" class="claim-button">Cere recompensa</button>
+        </article>
+
+        <article class="reward-card" data-id="boys-night" data-cost="150">
+          <span class="reward-emoji">🍿</span>
+          <h3>Seara băieților</h3>
+          <p>Film și popcorn · 150 Spark</p>
+          <button type="button" class="claim-button">Cere recompensa</button>
+        </article>
+
+        <article class="reward-card" data-id="cards" data-cost="250">
+          <span class="reward-emoji">🃏</span>
+          <h3>Cartonașe sportivi</h3>
+          <p>250 Spark</p>
+          <button type="button" class="claim-button">Cere recompensa</button>
+        </article>
+
+        <article class="reward-card" data-id="lego" data-cost="450">
+          <span class="reward-emoji">🧱</span>
+          <h3>Set LEGO mic</h3>
+          <p>450 Spark</p>
+          <button type="button" class="claim-button">Cere recompensa</button>
+        </article>
+
+        <article class="reward-card" data-id="zoo" data-cost="700">
+          <span class="reward-emoji">🦁</span>
+          <h3>Mini-excursie la zoo</h3>
+          <p>700 Spark</p>
+          <button type="button" class="claim-button">Cere recompensa</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="history-section">
+      <div class="section-heading">
+        <h2>Istoric recompense</h2>
+        <span class="muted">Ultimele cereri</span>
+      </div>
+      <div id="publicHistory" class="history-list">
+        <p class="empty-state">Nu există încă cereri.</p>
+      </div>
+    </section>
+
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+  </main>
+
+  <dialog id="parentDialog" class="parent-dialog">
+    <form method="dialog" class="dialog-card">
+      <button id="closeDialog" class="close-button" value="cancel" aria-label="Închide">×</button>
+
+      <div id="parentAuth">
+        <p class="eyebrow">Zonă protejată</p>
+        <h2 id="pinTitle">PIN părinte</h2>
+        <p id="pinHelp" class="dialog-help"></p>
+        <input
+          id="pinInput"
+          class="pin-input"
+          type="password"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="4"
+          autocomplete="off"
+          placeholder="••••"
+          aria-label="PIN părinte"
+        />
+        <button id="pinAction" class="primary-button" type="button">Continuă</button>
+        <p id="pinError" class="error-text"></p>
+      </div>
+
+      <div id="parentConsole" class="hidden">
+        <p class="eyebrow">Control parental</p>
+        <h2>Cereri în așteptare</h2>
+        <div id="pendingList" class="pending-list"></div>
+
+        <div class="parent-divider"></div>
+
+        <h3>Istoric complet</h3>
+        <div id="parentHistory" class="history-list"></div>
+
+        <p class="security-note">
+          PIN-ul este o protecție simplă pentru familie, nu un sistem de securitate bancară.
+        </p>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
