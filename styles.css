@@ -1205,3 +1205,149 @@ body[data-active-view="friends"] .app-view[data-view="friends"] { display: block
   .nav-icon { font-size: 1.18rem; }
   .friends-card { align-items:flex-start; }
 }
+
+
+/* V5.7 — text mai lizibil, misiuni secventiale si Otto vidra */
+body { font-size: 17px; }
+.hero h1 { font-size: clamp(2.05rem, 9vw, 3.2rem); }
+.subtitle, .date-label, .muted, .mission-content small, .card-progress-text { font-size: .98rem; }
+.section-heading h2 { font-size: 1.65rem; }
+.mission-content strong { font-size: 1.22rem; line-height: 1.2; }
+.mission-icon { width: 44px; height: 44px; font-size: 1.55rem; }
+.reward { font-size: 1.02rem; }
+.task-row { grid-template-columns: 30px minmax(0,1fr) 40px; min-height: 58px; padding: 12px; }
+.task-box { width: 28px; height: 28px; }
+.task-name { font-size: 1.08rem; line-height: 1.25; }
+.help-button { width: 38px; height: 38px; font-size: 1.05rem; }
+.card-progress { height: 10px; }
+.bottom-nav { min-height: 74px; }
+.bottom-nav-button { font-size: .74rem; gap: 5px; }
+.nav-icon { font-size: 1.48rem; }
+
+.mission-sequence {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(148,163,184,.18);
+  border-radius: 18px;
+  background: rgba(15,23,42,.62);
+}
+.mission-sequence-status { min-width: 0; text-align: center; }
+.mission-sequence-status small,
+.mission-sequence-status span { display:block; color:#cbd5e1; }
+.mission-sequence-status strong { display:block; margin:2px 0 4px; font-size:1.08rem; }
+.mission-sequence-status span { font-size:.82rem; line-height:1.25; }
+.mission-sequence-button {
+  min-height: 42px;
+  padding: 8px 11px;
+  border: 1px solid rgba(96,165,250,.32);
+  border-radius: 13px;
+  color:#e0f2fe;
+  background:rgba(37,99,235,.18);
+  font-weight:800;
+}
+.mission-card.sequence-hidden { display:none !important; }
+
+/* Otto este o vidra maro, nu un urs si nu este albastru. */
+.otto-smile-face {
+  width: 60px;
+  height: 60px;
+  border: 3px solid #6b3f28;
+  border-radius: 48% 48% 44% 44%;
+  background: linear-gradient(155deg,#9a6545,#6b3f28 68%,#4a2b1d);
+  box-shadow: inset 0 -7px 0 rgba(43,24,16,.18), 0 8px 20px rgba(0,0,0,.22);
+}
+.otto-ear { top:2px; width:16px; height:16px; background:#8a593d; border:3px solid #5b3423; z-index:0; }
+.otto-ear.left { left:-5px; } .otto-ear.right { right:-5px; }
+.otto-eye { top:20px; width:6px; height:7px; background:#17100c; z-index:2; }
+.otto-eye.left { left:15px; } .otto-eye.right { right:15px; }
+.otto-nose { top:31px; width:9px; height:7px; background:#17100c; z-index:3; }
+.otto-smile-face::before {
+  content:"";
+  position:absolute;
+  left:50%; top:28px;
+  width:34px; height:24px;
+  transform:translateX(-50%);
+  border-radius:48% 48% 52% 52%;
+  background:#d9b08c;
+  z-index:1;
+}
+.otto-smile-face::after {
+  content:"";
+  position:absolute;
+  left:50%; top:36px;
+  width:46px; height:14px;
+  transform:translateX(-50%);
+  background:
+    linear-gradient(#f5e6d8,#f5e6d8) 0 4px/15px 1px no-repeat,
+    linear-gradient(#f5e6d8,#f5e6d8) 31px 4px/15px 1px no-repeat,
+    linear-gradient(#f5e6d8,#f5e6d8) 1px 9px/14px 1px no-repeat,
+    linear-gradient(#f5e6d8,#f5e6d8) 31px 9px/14px 1px no-repeat;
+  z-index:2;
+}
+.otto-smile { top:38px; width:20px; height:9px; border-bottom:3px solid #3a2117; z-index:3; }
+.celebration-otto { background:rgba(120,72,42,.18); border-color:rgba(217,176,140,.28); }
+.celebration-otto p { color:#f3e4d7; }
+
+@media (max-width: 430px) {
+  body { font-size:16px; }
+  .mission-sequence { grid-template-columns: 1fr; }
+  .mission-sequence-button { width:100%; }
+  .mission-sequence-button[hidden] { display:none; }
+  .task-row { grid-template-columns: 28px minmax(0,1fr) 38px; }
+  .bottom-nav-button { font-size:.7rem; }
+  .nav-icon { font-size:1.4rem; }
+}
+
+
+/* V5.8 — o singură misiune vizibilă și Otto vidră ilustrată */
+.mission-card[hidden], .mission-card.sequence-hidden { display: none !important; }
+.otto-avatar-image {
+  display:block;
+  width:64px;
+  height:64px;
+  flex:0 0 64px;
+  object-fit:contain;
+  animation:bob 2s ease-in-out infinite;
+}
+.friends-otto.otto-avatar-image { width:76px; height:76px; flex-basis:76px; }
+.celebration-otto-avatar.otto-avatar-image { font-size:initial; }
+@media (max-width:430px) {
+  .otto-avatar-image { width:60px; height:60px; flex-basis:60px; }
+}
+
+
+/* V6.0 — compact top status menu */
+body { padding-top: 76px; }
+.compact-topbar { position:fixed; top:0; left:0; right:0; z-index:1200; background:rgba(12,18,31,.96); backdrop-filter:blur(16px); border-bottom:1px solid rgba(148,163,184,.18); padding:max(8px, env(safe-area-inset-top)) 12px 8px; }
+.topbar-summary { width:min(100%,760px); margin:0 auto; min-height:54px; border:0; border-radius:16px; background:#172033; color:#f8fafc; display:grid; grid-template-columns:minmax(96px,1fr) repeat(4,auto) auto; align-items:center; gap:10px; padding:8px 12px; font:inherit; }
+.topbar-brand { display:flex; align-items:center; gap:8px; min-width:0; }
+.topbar-brand img { width:34px; height:34px; object-fit:contain; }
+.topbar-brand strong { font-size:.96rem; white-space:nowrap; }
+.topbar-metric { display:flex; gap:3px; align-items:center; font-size:.9rem; white-space:nowrap; }
+.topbar-chevron { font-size:1.15rem; transition:transform .2s ease; }
+.topbar-summary[aria-expanded="true"] .topbar-chevron { transform:rotate(180deg); }
+.topbar-details { width:min(calc(100% - 24px),736px); margin:8px auto 0; background:#172033; color:#f8fafc; border:1px solid rgba(148,163,184,.18); border-radius:16px; padding:14px; }
+.topbar-detail-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.topbar-detail-grid > div { background:rgba(255,255,255,.055); border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:4px; }
+.topbar-detail-grid span { color:#aebbd0; font-size:.75rem; }
+.topbar-detail-grid strong { font-size:.95rem; }
+.topbar-progress-detail { grid-column:1/-1; }
+.topbar-progress-track { height:8px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.12); margin-top:4px; }
+.topbar-progress-track > div { height:100%; width:0; background:#f6c453; border-radius:inherit; transition:width .3s ease; }
+.topbar-actions { display:flex; gap:8px; margin-top:10px; }
+.topbar-actions button { flex:1; min-height:40px; border:1px solid rgba(148,163,184,.25); border-radius:12px; background:rgba(255,255,255,.07); color:#f8fafc; font:inherit; font-weight:700; }
+.hero, .otto-card, .action-row, .install-help, .rpg-dashboard, .progress-card { display:none !important; }
+.optional-task { border:1px dashed rgba(246,196,83,.45); background:rgba(246,196,83,.07); }
+.optional-task .task-name { color:#ffe09a; }
+@media (max-width:520px) {
+  body { padding-top:72px; }
+  .topbar-summary { grid-template-columns:minmax(72px,1fr) repeat(4,auto) auto; gap:6px; padding-inline:8px; }
+  .topbar-brand strong { display:none; }
+  .topbar-brand img { width:32px; height:32px; }
+  .topbar-metric { font-size:.79rem; }
+  .topbar-detail-grid { grid-template-columns:repeat(2,1fr); }
+}

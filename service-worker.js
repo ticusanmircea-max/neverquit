@@ -1,13 +1,13 @@
-const CACHE_NAME = "neverquit-v5-8-single-mission-otter";
+const CACHE_NAME = "neverquit-v5-9-complete-mission-unlock";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=5.8.0",
-  "./app.js?v=5.8.0",
+  "./styles.css?v=6.0.0",
+  "./app.js?v=6.0.0",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/otto-smile.svg?v=5.8.0"
+  "./icons/otto-smile.svg?v=6.0.0"
 ];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));

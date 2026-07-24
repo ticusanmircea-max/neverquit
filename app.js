@@ -57,8 +57,22 @@ const closeTaskHelpBottom = document.getElementById("closeTaskHelpBottom");
 const bottomNavButtons = [...document.querySelectorAll(".bottom-nav-button")];
 const achievementNavBadge = document.getElementById("achievementNavBadge");
 const rewardNavBadge = document.getElementById("rewardNavBadge");
+const topbarToggle = document.getElementById("topbarToggle");
+const topbarDetails = document.getElementById("topbarDetails");
+const topStreak = document.getElementById("topStreak");
+const topSpark = document.getElementById("topSpark");
+const topLevel = document.getElementById("topLevel");
+const topProgress = document.getElementById("topProgress");
+const topCurrentStreak = document.getElementById("topCurrentStreak");
+const topBestStreak = document.getElementById("topBestStreak");
+const topSparkDetail = document.getElementById("topSparkDetail");
+const topLevelDetail = document.getElementById("topLevelDetail");
+const topProgressText = document.getElementById("topProgressText");
+const topProgressBar = document.getElementById("topProgressBar");
+const topParentButton = document.getElementById("topParentButton");
+const topResetButton = document.getElementById("topResetButton");
 
-const ACTIVE_MISSION_KEY = "neverquit_active_mission_v58";
+const ACTIVE_MISSION_KEY = "neverquit_active_mission_v60";
 const previousMissionButton = document.getElementById("previousMissionButton");
 const nextMissionButton = document.getElementById("nextMissionButton");
 const activeMissionName = document.getElementById("activeMissionName");
@@ -67,13 +81,22 @@ let activeMissionId = localStorage.getItem(ACTIVE_MISSION_KEY) || missionCards[0
 
 function getCardProgress(card) {
   const checks = [...card.querySelectorAll(".task-check")];
+  const requiredChecks = checks.filter((check) => check.dataset.optional !== "true");
   const done = checks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
-  return { done, total: checks.length, percent: checks.length ? (done / checks.length) * 100 : 0 };
+  const requiredDone = requiredChecks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
+  return {
+    done,
+    total: checks.length,
+    percent: checks.length ? (done / checks.length) * 100 : 0,
+    requiredDone,
+    requiredTotal: requiredChecks.length,
+    unlockReady: requiredChecks.length === 0 || requiredDone === requiredChecks.length,
+  };
 }
 
 function isMissionUnlocked(index) {
   if (index <= 0) return true;
-  return getCardProgress(missionCards[index - 1]).percent >= 75;
+  return getCardProgress(missionCards[index - 1]).unlockReady;
 }
 
 function setActiveMission(index) {
@@ -106,7 +129,7 @@ function renderMissionSequence() {
   const progress = activeCard ? getCardProgress(activeCard) : { percent: 0 };
   const hasPrevious = activeIndex > 0;
   const hasNext = activeIndex < missionCards.length - 1;
-  const nextUnlocked = hasNext && progress.percent >= 75;
+  const nextUnlocked = hasNext && progress.unlockReady;
 
   if (previousMissionButton) previousMissionButton.hidden = !hasPrevious;
   if (nextMissionButton) {
@@ -116,7 +139,7 @@ function renderMissionSequence() {
   if (nextMissionHint) {
     if (!hasNext) nextMissionHint.textContent = "Aceasta este ultima misiune a zilei.";
     else if (nextUnlocked) nextMissionHint.textContent = "Ai deblocat urmatoarea misiune!";
-    else nextMissionHint.textContent = `Mai ai nevoie de ${Math.max(0, 75 - Math.round(progress.percent))}% pentru a debloca urmatoarea misiune.`;
+    else nextMissionHint.textContent = `Finalizează toate activitățile acestei misiuni pentru a continua.`;
   }
 }
 
@@ -546,6 +569,19 @@ function render() {
   progressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
   progressBar.style.width = `${taskChecks.length ? (completedTasks.length / taskChecks.length) * 100 : 0}%`;
   progressBar.setAttribute("aria-valuenow", String(completedTasks.length));
+  const dayPercent = taskChecks.length ? Math.round((completedTasks.length / taskChecks.length) * 100) : 0;
+  const streakInfo = getStreaks(state.completedDays);
+  const topLevelInfo = getLevelInfo(state.totalEarned);
+  if (topStreak) topStreak.textContent = streakInfo.current;
+  if (topSpark) topSpark.textContent = state.wallet;
+  if (topLevel) topLevel.textContent = topLevelInfo.level;
+  if (topProgress) topProgress.textContent = `${dayPercent}%`;
+  if (topCurrentStreak) topCurrentStreak.textContent = streakInfo.current;
+  if (topBestStreak) topBestStreak.textContent = streakInfo.best;
+  if (topSparkDetail) topSparkDetail.textContent = state.wallet;
+  if (topLevelDetail) topLevelDetail.textContent = `${topLevelInfo.level} · ${topLevelInfo.current.title}`;
+  if (topProgressText) topProgressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
+  if (topProgressBar) topProgressBar.style.width = `${dayPercent}%`;
 
   todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
     weekday: "long",
@@ -630,7 +666,7 @@ function handleTaskChange(card, checkbox) {
     showMissionCelebration({ missionName: cardCompleted ? card.querySelector(".mission-content strong").textContent : taskName, points, completedToday, newlyUnlocked, leveledUp: newLevelInfo.level > previousLevel, levelInfo: newLevelInfo, cardCompleted });
     const currentIndex = missionCards.indexOf(card);
     const progressNow = getCardProgress(card);
-    if (progressNow.percent >= 75 && currentIndex >= 0 && currentIndex < missionCards.length - 1) {
+    if (progressNow.unlockReady && currentIndex >= 0 && currentIndex < missionCards.length - 1) {
       activeMissionId = missionCards[currentIndex + 1].dataset.id;
       localStorage.setItem(ACTIVE_MISSION_KEY, activeMissionId);
     }
@@ -883,6 +919,17 @@ state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
 saveState();
 render();
 
+
+if (topbarToggle && topbarDetails) {
+  topbarToggle.addEventListener("click", () => {
+    const willOpen = topbarDetails.hidden;
+    topbarDetails.hidden = !willOpen;
+    topbarToggle.setAttribute("aria-expanded", String(willOpen));
+    document.body.classList.toggle("topbar-open", willOpen);
+  });
+}
+if (topParentButton) topParentButton.addEventListener("click", () => parentButton?.click());
+if (topResetButton) topResetButton.addEventListener("click", () => resetButton?.click());
 
 const installButton = document.getElementById("installButton");
 const installHelp = document.getElementById("installHelp");

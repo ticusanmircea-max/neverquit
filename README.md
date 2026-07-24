@@ -1,8 +1,3 @@
-# NeverQuit V5.4 – Activități bifabile
+# NeverQuit V6.0
 
-- activitățile principale (pat, dinți, mic dejun etc.) se bifează separat;
-- progres general și progres în fiecare misiune;
-- Spark și celebrare la fiecare bifă;
-- misiunea se finalizează automat când toate activitățile ei sunt bifate;
-- butonul „?” deschide un ghid opțional cu idei/subetape;
-- migrare automată din starea V5.2/V5.3.
+Versiune cu interfață aerisită și progres secvențial. Informațiile dinamice sunt mutate într-o bară fixă extensibilă în partea de sus. În „Corpul campionului”, Kineto este activitate bonus de +2 Spark și nu blochează următoarea misiune.
