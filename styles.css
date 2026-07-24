@@ -856,3 +856,62 @@ h1 {
 .otto-card{display:flex;align-items:center;gap:16px;background:#1f2937;color:#fff;border-radius:18px;padding:14px;margin:14px 0;box-shadow:0 8px 20px rgba(0,0,0,.2)}
 .otto-avatar{font-size:56px;animation:bob 2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-4px)}}
+
+
+/* Mission Complete Celebration */
+.mission-complete-dialog {
+  width: min(calc(100% - 24px), 460px);
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  color: #f8fafc;
+  background: transparent;
+}
+.mission-complete-dialog::backdrop {
+  background: rgba(2, 6, 23, 0.86);
+  backdrop-filter: blur(7px);
+}
+.mission-complete-card {
+  position: relative;
+  overflow: hidden;
+  padding: 30px 24px 24px;
+  text-align: center;
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(250, 204, 21, 0.24), transparent 35%),
+    linear-gradient(155deg, #312e81 0%, #111827 58%, #0f172a 100%);
+  box-shadow: 0 28px 90px rgba(0,0,0,.58);
+  animation: celebration-pop 420ms cubic-bezier(.2,.9,.2,1.15);
+}
+.celebration-confetti {
+  position: absolute; inset: 12px 12px auto;
+  color: #fde047; letter-spacing: 12px; opacity: .9;
+  animation: celebration-float 1.8s ease-in-out infinite;
+}
+.celebration-check {
+  display: grid; place-items: center;
+  width: 78px; height: 78px; margin: 8px auto 16px;
+  border-radius: 50%;
+  color: white; background: linear-gradient(145deg,#22c55e,#16a34a);
+  font-size: 3.1rem; font-weight: 900;
+  box-shadow: 0 0 0 10px rgba(34,197,94,.12), 0 16px 34px rgba(34,197,94,.28);
+  animation: check-bounce 520ms 120ms both;
+}
+.mission-complete-card h2 { margin: 5px 0 12px; font-size: clamp(1.55rem,7vw,2.25rem); }
+.celebration-reward {
+  display: inline-block; margin: 2px 0 16px; padding: 8px 15px;
+  border-radius: 999px; color: #fde047; background: rgba(250,204,21,.12);
+  border: 1px solid rgba(250,204,21,.28); font-size: 1.35rem; font-weight: 900;
+}
+.celebration-stats { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+.celebration-stats span { padding:7px 10px; border-radius:12px; background:rgba(255,255,255,.075); color:#e2e8f0; font-weight:700; font-size:.88rem; }
+.celebration-otto { display:flex; align-items:center; gap:12px; padding:13px 14px; margin:0 0 12px; text-align:left; border-radius:18px; background:rgba(59,130,246,.13); border:1px solid rgba(96,165,250,.2); }
+.celebration-otto-avatar { font-size:2.25rem; animation:bob 2s ease-in-out infinite; }
+.celebration-otto p { margin:0; color:#dbeafe; line-height:1.35; font-weight:700; }
+.celebration-saved { display:block; margin-bottom:14px; color:#94a3b8; }
+.mission-complete-card .primary-button { width:100%; }
+@keyframes celebration-pop { from { transform:translateY(24px) scale(.88); opacity:0 } to { transform:none; opacity:1 } }
+@keyframes check-bounce { 0% { transform:scale(.25) rotate(-18deg); opacity:0 } 70% { transform:scale(1.12) rotate(4deg); opacity:1 } 100% { transform:scale(1) rotate(0) } }
+@keyframes celebration-float { 50% { transform:translateY(5px); opacity:.6 } }
+@media (prefers-reduced-motion: reduce) { .mission-complete-card,.celebration-check,.celebration-confetti { animation:none !important; } }

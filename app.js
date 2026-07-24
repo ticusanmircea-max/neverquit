@@ -39,6 +39,13 @@ const achievementGrid = document.getElementById("achievementGrid");
 const levelUpDialog = document.getElementById("levelUpDialog");
 const levelUpMessage = document.getElementById("levelUpMessage");
 const closeLevelUp = document.getElementById("closeLevelUp");
+const missionCompleteDialog = document.getElementById("missionCompleteDialog");
+const closeMissionComplete = document.getElementById("closeMissionComplete");
+const celebrationMission = document.getElementById("celebrationMission");
+const celebrationSpark = document.getElementById("celebrationSpark");
+const celebrationStreak = document.getElementById("celebrationStreak");
+const celebrationLevel = document.getElementById("celebrationLevel");
+const celebrationMessage = document.getElementById("celebrationMessage");
 
 const LEVELS = [
   { threshold: 0, title: "Începător curajos" },
@@ -460,6 +467,31 @@ function render() {
   }
 }
 
+function showMissionCelebration({ missionName, points, completedToday, newlyUnlocked, leveledUp, levelInfo }) {
+  if (!missionCompleteDialog || missionCompleteDialog.open) return;
+
+  const streak = getStreaks(state.completedDays).current;
+  celebrationMission.textContent = missionName;
+  celebrationSpark.textContent = `+${points} ✦ Spark`;
+  celebrationStreak.textContent = `🔥 Streak: ${streak} ${streak === 1 ? "zi" : "zile"}`;
+  celebrationLevel.textContent = `⭐ Nivel ${levelInfo.level}`;
+
+  let ottoText = "Încă un pas. Campionii nu renunță.";
+  if (leveledUp) {
+    ottoText = `🚀 Ai ajuns la Nivelul ${levelInfo.level}: ${levelInfo.current.title}!`;
+  } else if (newlyUnlocked.length > 0) {
+    ottoText = `🏅 Insignă nouă: ${newlyUnlocked[0].name}!`;
+  } else if (completedToday) {
+    ottoText = "🏆 Zi perfectă! Ai terminat toate misiunile de azi.";
+  } else if (state.stats.totalMissions === 1) {
+    ottoText = "⚡ Primul pas este făcut. Bravo!";
+  }
+  celebrationMessage.textContent = ottoText;
+
+  if (navigator.vibrate) navigator.vibrate(45);
+  missionCompleteDialog.showModal();
+}
+
 function handleMissionChange(card, checkbox) {
   const missionId = card.dataset.id;
   const points = Number(card.dataset.points);
@@ -480,15 +512,16 @@ function handleMissionChange(card, checkbox) {
     saveState();
     createSparkBurst(points, card);
 
-    if (newLevelInfo.level > previousLevel) {
-      showLevelUp(newLevelInfo);
-    } else if (newlyUnlocked.length > 0) {
-      setMessage(`Insignă nouă: ${newlyUnlocked[0].name}!`);
-    } else if (completedToday) {
-      setMessage("Zi completă de campion! Streak-ul continuă.");
-    } else {
-      setMessage(`Misiune completată: +${points} Spark.`);
-    }
+    const missionName = card.querySelector(".mission-content strong")?.textContent || "Misiune finalizată";
+    showMissionCelebration({
+      missionName,
+      points,
+      completedToday,
+      newlyUnlocked,
+      leveledUp: newLevelInfo.level > previousLevel,
+      levelInfo: newLevelInfo,
+    });
+    setMessage(`Misiune completată: +${points} Spark.`);
 
     render();
     return;
@@ -683,6 +716,12 @@ resetButton.addEventListener("click", () => {
   saveState();
   setMessage("Misiunile zilei au fost resetate.");
   render();
+});
+
+
+closeMissionComplete.addEventListener("click", () => missionCompleteDialog.close());
+missionCompleteDialog.addEventListener("click", (event) => {
+  if (event.target === missionCompleteDialog) missionCompleteDialog.close();
 });
 
 closeLevelUp.addEventListener("click", () => levelUpDialog.close());
