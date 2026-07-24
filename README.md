@@ -26,3 +26,6 @@ Fișierele care trebuie înlocuite:
 - `README.md`
 
 După publicare, deschide aplicația și reîncarcă pagina. Dacă aplicația instalată afișează încă versiunea veche, închide-o complet și redeschide-o după câteva secunde.
+
+
+V5.1 placeholder
