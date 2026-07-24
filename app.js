@@ -58,6 +58,65 @@ const bottomNavButtons = [...document.querySelectorAll(".bottom-nav-button")];
 const achievementNavBadge = document.getElementById("achievementNavBadge");
 const rewardNavBadge = document.getElementById("rewardNavBadge");
 
+const ACTIVE_MISSION_KEY = "neverquit_active_mission_v57";
+const previousMissionButton = document.getElementById("previousMissionButton");
+const nextMissionButton = document.getElementById("nextMissionButton");
+const activeMissionName = document.getElementById("activeMissionName");
+const nextMissionHint = document.getElementById("nextMissionHint");
+let activeMissionId = localStorage.getItem(ACTIVE_MISSION_KEY) || missionCards[0]?.dataset.id || "start";
+
+function getCardProgress(card) {
+  const checks = [...card.querySelectorAll(".task-check")];
+  const done = checks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
+  return { done, total: checks.length, percent: checks.length ? (done / checks.length) * 100 : 0 };
+}
+
+function isMissionUnlocked(index) {
+  if (index <= 0) return true;
+  return getCardProgress(missionCards[index - 1]).percent >= 75;
+}
+
+function setActiveMission(index) {
+  if (index < 0 || index >= missionCards.length || !isMissionUnlocked(index)) return;
+  activeMissionId = missionCards[index].dataset.id;
+  localStorage.setItem(ACTIVE_MISSION_KEY, activeMissionId);
+  renderMissionSequence();
+  missionCards[index].scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderMissionSequence() {
+  let activeIndex = missionCards.findIndex((card) => card.dataset.id === activeMissionId);
+  if (activeIndex < 0 || !isMissionUnlocked(activeIndex)) {
+    activeIndex = Math.max(0, missionCards.findLastIndex ? missionCards.findLastIndex((_, index) => isMissionUnlocked(index)) : 0);
+    activeMissionId = missionCards[activeIndex]?.dataset.id || missionCards[0]?.dataset.id;
+    localStorage.setItem(ACTIVE_MISSION_KEY, activeMissionId);
+  }
+
+  missionCards.forEach((card, index) => {
+    card.classList.toggle("sequence-hidden", index !== activeIndex);
+  });
+
+  const activeCard = missionCards[activeIndex];
+  const activeTitle = activeCard?.querySelector(".mission-content strong")?.textContent || "Misiune";
+  if (activeMissionName) activeMissionName.textContent = activeTitle;
+
+  const progress = activeCard ? getCardProgress(activeCard) : { percent: 0 };
+  const hasPrevious = activeIndex > 0;
+  const hasNext = activeIndex < missionCards.length - 1;
+  const nextUnlocked = hasNext && progress.percent >= 75;
+
+  if (previousMissionButton) previousMissionButton.hidden = !hasPrevious;
+  if (nextMissionButton) {
+    nextMissionButton.hidden = !nextUnlocked;
+    nextMissionButton.textContent = nextUnlocked ? "Urmatoarea misiune →" : "Urmatoarea →";
+  }
+  if (nextMissionHint) {
+    if (!hasNext) nextMissionHint.textContent = "Aceasta este ultima misiune a zilei.";
+    else if (nextUnlocked) nextMissionHint.textContent = "Ai deblocat urmatoarea misiune!";
+    else nextMissionHint.textContent = `Mai ai nevoie de ${Math.max(0, 75 - Math.round(progress.percent))}% pentru a debloca urmatoarea misiune.`;
+  }
+}
+
 
 const LEVELS = [
   { threshold: 0, title: "Începător curajos" },
@@ -501,6 +560,7 @@ function render() {
     if (cardBar) cardBar.style.width = `${percent}%`;
     if (cardText) cardText.textContent = `${done} / ${checks.length} bifate`;
   });
+  renderMissionSequence();
 
   const pendingCount = pendingRequests().length;
   pendingBadge.textContent = pendingCount;
@@ -790,6 +850,16 @@ pinInput.addEventListener("keydown", (event) => {
     event.preventDefault();
     handlePinAction();
   }
+});
+
+
+if (previousMissionButton) previousMissionButton.addEventListener("click", () => {
+  const index = missionCards.findIndex((card) => card.dataset.id === activeMissionId);
+  setActiveMission(index - 1);
+});
+if (nextMissionButton) nextMissionButton.addEventListener("click", () => {
+  const index = missionCards.findIndex((card) => card.dataset.id === activeMissionId);
+  setActiveMission(index + 1);
 });
 
 bottomNavButtons.forEach((button) => {

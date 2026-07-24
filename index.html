@@ -14,7 +14,7 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=5.6.0" rel="stylesheet"/>
+<link href="styles.css?v=5.7.0" rel="stylesheet"/>
 </head>
 <body>
 <main class="app-shell">
@@ -109,6 +109,15 @@
 <div class="section-heading">
 <h2>Misiuni</h2>
 <button class="ghost-button" id="resetButton" type="button">Resetează ziua</button>
+</div>
+<div class="mission-sequence" id="missionSequence" aria-live="polite">
+  <button class="mission-sequence-button" id="previousMissionButton" type="button">← Anterioara</button>
+  <div class="mission-sequence-status">
+    <small>Misiunea activa</small>
+    <strong id="activeMissionName">Startul campionului</strong>
+    <span id="nextMissionHint">Finalizeaza minimum 75% pentru urmatoarea misiune.</span>
+  </div>
+  <button class="mission-sequence-button next" id="nextMissionButton" type="button" hidden>Urmatoarea →</button>
 </div>
 <div class="mission-list" id="missions">
 <article class="mission-card" data-id="start">
@@ -280,6 +289,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=5.6.0"></script>
+<script src="app.js?v=5.7.0"></script>
 </body>
 </html>
