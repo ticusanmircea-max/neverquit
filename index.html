@@ -4,7 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#111827" />
+  <meta name="application-name" content="NeverQuit" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NeverQuit" />
   <title>NeverQuit — Ziua 2</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -28,10 +36,17 @@
 
     <section class="action-row">
       <span id="todayLabel" class="date-label"></span>
-      <button id="parentButton" class="parent-button" type="button">
+      <div class="top-actions">
+        <button id="installButton" class="install-button hidden" type="button">Instalează</button>
+        <button id="parentButton" class="parent-button" type="button">
         Zonă părinte
         <span id="pendingBadge" class="badge hidden">0</span>
       </button>
+      </div>
+    </section>
+
+    <section id="installHelp" class="install-help hidden">
+      <strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
     </section>
 
     <section class="progress-card">

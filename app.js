@@ -457,3 +457,40 @@ pinInput.addEventListener("keydown", (event) => {
 
 rolloverDayIfNeeded();
 render();
+
+
+const installButton = document.getElementById("installButton");
+const installHelp = document.getElementById("installHelp");
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  installButton.classList.remove("hidden");
+});
+
+installButton.addEventListener("click", async () => {
+  if (!deferredInstallPrompt) {
+    installHelp.classList.remove("hidden");
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  installButton.classList.add("hidden");
+});
+
+window.addEventListener("appinstalled", () => {
+  setMessage("NeverQuit a fost instalată pe dispozitiv.");
+  installButton.classList.add("hidden");
+  installHelp.classList.add("hidden");
+});
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+      console.error("Service worker registration failed:", error);
+    });
+  });
+}
