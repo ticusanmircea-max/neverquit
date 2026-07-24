@@ -1,316 +1,272 @@
 <!DOCTYPE html>
+
 <html lang="ro">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#111827" />
-  <meta name="application-name" content="NeverQuit" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="NeverQuit" />
-  <title>NeverQuit — RPG Mode</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icons/icon-192.png" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#111827" name="theme-color"/>
+<meta content="NeverQuit" name="application-name"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="NeverQuit" name="apple-mobile-web-app-title"/>
+<title>NeverQuit — RPG Mode</title>
+<link href="manifest.webmanifest" rel="manifest"/>
+<link href="icons/icon-192.png" rel="icon"/>
+<link href="icons/icon-192.png" rel="apple-touch-icon"/>
+<link href="styles.css?v=5.5.0" rel="stylesheet"/>
 </head>
 <body>
-  <main class="app-shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">Misiunea de azi</p>
-        <h1>NEVERQUIT</h1>
-        <p class="subtitle">Fiecare pas aprinde un Spark.</p>
-      </div>
-
-      <section class="spark-panel" aria-label="Sold Spark">
-        <span class="spark-icon">✦</span>
-        <div>
-          <span id="sparkTotal" class="spark-total">0</span>
-          <span class="spark-label">Spark disponibili</span>
-          <small id="reservedText" class="reserved-text"></small>
-        </div>
-      </section>
-    </header>
-
-    
+<main class="app-shell">
+<header class="hero">
+<div>
+<p class="eyebrow">Misiunea de azi</p>
+<h1>NEVERQUIT</h1>
+<p class="subtitle">Fiecare pas aprinde un Spark.</p>
+</div>
+<section aria-label="Sold Spark" class="spark-panel">
+<span class="spark-icon">✦</span>
+<div>
+<span class="spark-total" id="sparkTotal">0</span>
+<span class="spark-label">Spark disponibili</span>
+<small class="reserved-text" id="reservedText"></small>
+</div>
+</section>
+</header>
 <section class="otto-card"><div class="otto-avatar">🦦</div><div><h3>Otto</h3><p id="ottoMessage">Salut, Iosif! Hai să construim încă o zi de campion!</p></div></section>
-
 <section class="action-row">
-      <span id="todayLabel" class="date-label"></span>
-      <div class="top-actions">
-        <button id="installButton" class="install-button hidden" type="button">Instalează</button>
-        <button id="parentButton" class="parent-button" type="button">
+<span class="date-label" id="todayLabel"></span>
+<div class="top-actions">
+<button class="install-button hidden" id="installButton" type="button">Instalează</button>
+<button class="parent-button" id="parentButton" type="button">
         Zonă părinte
-        <span id="pendingBadge" class="badge hidden">0</span>
-      </button>
-      </div>
+        <span class="badge hidden" id="pendingBadge">0</span>
+</button>
+</div>
+</section>
+<section class="install-help hidden" id="installHelp">
+<strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
     </section>
-
-    <section id="installHelp" class="install-help hidden">
-      <strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
-    </section>
-
-
-    <section class="rpg-dashboard" aria-label="Progres RPG">
-      <article class="level-card">
-        <div class="level-orb">
-          <span class="level-caption">LEVEL</span>
-          <strong id="levelNumber">1</strong>
-        </div>
-        <div class="level-details">
-          <div class="level-heading">
-            <div>
-              <p class="eyebrow">Drumul campionului</p>
-              <h2 id="levelTitle">Începător curajos</h2>
-            </div>
-            <span id="levelProgressText" class="level-progress-text">0 / 500 Spark</span>
-          </div>
-          <div class="level-track" aria-label="Progres către nivelul următor">
-            <div id="levelProgressBar" class="level-progress-bar"></div>
-          </div>
-        </div>
-      </article>
-
-      <div class="stat-grid">
-        <article class="stat-card">
-          <span class="stat-icon">🔥</span>
-          <strong id="currentStreak">0</strong>
-          <small>zile streak</small>
-        </article>
-        <article class="stat-card">
-          <span class="stat-icon">🏆</span>
-          <strong id="bestStreak">0</strong>
-          <small>record streak</small>
-        </article>
-        <article class="stat-card">
-          <span class="stat-icon">✓</span>
-          <strong id="totalMissions">0</strong>
-          <small>misiuni terminate</small>
-        </article>
-        <article class="stat-card">
-          <span class="stat-icon">✦</span>
-          <strong id="lifetimeSpark">0</strong>
-          <small>Spark câștigați</small>
-        </article>
-      </div>
-    </section>
-
-    <section class="achievements-section">
-      <div class="section-heading">
-        <h2>Insigne</h2>
-        <span id="achievementCount" class="muted">0 / 6 deblocate</span>
-      </div>
-      <div id="achievementGrid" class="achievement-grid"></div>
-    </section>
-
-    <section class="progress-card">
-      <div class="progress-row">
-        <span>Progresul zilei</span>
-        <strong id="progressText">0 / 5 misiuni</strong>
-      </div>
-      <div class="progress-track" aria-hidden="true">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-heading">
-        <h2>Misiuni</h2>
-        <button id="resetButton" class="ghost-button" type="button">Resetează ziua</button>
-      </div>
-
-      <div id="missions" class="mission-list">
-        <article class="mission-card" data-id="start">
-          <div class="mission-main">
-            <div class="mission-heading"><span class="mission-icon">🌅</span><div class="mission-content"><strong>Startul campionului</strong><small>4 pași simpli pentru un început bun.</small></div><span class="reward">10 ✦</span></div>
-            <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 4 bifate</small>
-            <div class="task-list">
-              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-bed" data-points="3"><span class="task-box"></span><span class="task-name">🛏️ Făcut patul</span><button class="help-button" type="button" data-help-title="Cum fac patul?" data-help="Întinde cearșaful și pilota, așază perna și pune pijamaua la loc.">?</button></label>
-              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-teeth" data-points="3"><span class="task-box"></span><span class="task-name">🪥 Spălat pe dinți</span><button class="help-button" type="button" data-help-title="Cum mă spăl corect pe dinți?" data-help="Periază toate suprafețele dinților aproximativ două minute, fără să apeși prea tare. Nu uita măselele și limba.">?</button></label>
-              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-breakfast" data-points="2"><span class="task-box"></span><span class="task-name">🥣 Mic dejun</span><button class="help-button" type="button" data-help-title="Idee pentru micul dejun" data-help="Alege ceva simplu și hrănitor, bea apă și lasă locul curat după masă.">?</button></label>
-              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-plan" data-points="2"><span class="task-box"></span><span class="task-name">🧭 Planul zilei</span><button class="help-button" type="button" data-help-title="Cum îmi fac planul?" data-help="Privește activitățile zilei și alege cu ce începi. Pune mai întâi lucrurile importante.">?</button></label>
-            </div>
-          </div>
-        </article>
-
-        <article class="mission-card" data-id="mind"><div class="mission-main">
-          <div class="mission-heading"><span class="mission-icon">🧠</span><div class="mission-content"><strong>Mintea strategului</strong><small>Bifează activitățile făcute astăzi.</small></div><span class="reward">40 ✦</span></div>
-          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
-          <div class="task-list">
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-school" data-points="15"><span class="task-box"></span><span class="task-name">📘 Teme sau recapitulare</span><button class="help-button" type="button" data-help-title="Cum încep?" data-help="Alege o singură materie, pregătește ce îți trebuie și lucrează fără alte ecrane.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-read" data-points="10"><span class="task-box"></span><span class="task-name">📚 Citit</span><button class="help-button" type="button" data-help-title="Idee pentru citit" data-help="Alege cartea, citește intervalul stabilit și spune într-o propoziție ce ți-a plăcut.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-project" data-points="15"><span class="task-box"></span><span class="task-name">🧱 Proiect personal / LEGO / desen</span><button class="help-button" type="button" data-help-title="Ce pot construi?" data-help="Continuă un proiect început sau creează ceva nou. Important este să lucrezi concentrat și să termini o etapă.">?</button></label>
-          </div></div></article>
-
-        <article class="mission-card" data-id="body"><div class="mission-main">
-          <div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Mișcare pentru energie.</small></div><span class="reward">20 ✦</span></div>
-          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
-          <div class="task-list">
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-push" data-points="6"><span class="task-box"></span><span class="task-name">⬆️ Flotări</span><button class="help-button" type="button" data-help-title="Flotări corecte" data-help="Ține corpul drept, coboară controlat și oprește-te dacă apare durere. Calitatea este mai importantă decât viteza.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-squat" data-points="6"><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span><button class="help-button" type="button" data-help-title="Genuflexiuni corecte" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-move" data-points="8"><span class="task-box"></span><span class="task-name">🚲 Mișcare, joacă sau plimbare</span><button class="help-button" type="button" data-help-title="Idei de mișcare" data-help="Bicicletă, fotbal, alergare, plimbare sau joacă activă. Alege ce îți place astăzi.">?</button></label>
-          </div></div></article>
-
-        <article class="mission-card" data-id="team"><div class="mission-main">
-          <div class="mission-heading"><span class="mission-icon">🤝</span><div class="mission-content"><strong>Echipa</strong><small>Contribuie la binele familiei.</small></div><span class="reward">15 ✦</span></div>
-          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
-          <div class="task-list">
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-time" data-points="5"><span class="task-box"></span><span class="task-name">👨‍👩‍👧‍👦 Timp cu familia</span><button class="help-button" type="button" data-help-title="Ce înseamnă timp împreună?" data-help="O conversație, un joc, o plimbare sau o activitate făcută fără telefon.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-help" data-points="5"><span class="task-box"></span><span class="task-name">🫶 Ajutor oferit</span><button class="help-button" type="button" data-help-title="Idei de ajutor" data-help="Strânge masa, pune lucrurile la loc, ajută cu Iris sau întreabă direct cu ce poți fi de folos.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-kind" data-points="5"><span class="task-box"></span><span class="task-name">💬 Un gest sau un cuvânt frumos</span><button class="help-button" type="button" data-help-title="Idee" data-help="Mulțumește, încurajează, laudă sincer sau fă un gest mic care ajută pe cineva.">?</button></label>
-          </div></div></article>
-
-        <article class="mission-card" data-id="finish"><div class="mission-main">
-          <div class="mission-heading"><span class="mission-icon">🌙</span><div class="mission-content"><strong>Închiderea zilei</strong><small>Pregătește un final liniștit.</small></div><span class="reward">15 ✦</span></div>
-          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
-          <div class="task-list">
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-order" data-points="5"><span class="task-box"></span><span class="task-name">🧹 Lucrurile puse la loc</span><button class="help-button" type="button" data-help-title="Ordine rapidă" data-help="Strânge obiectele folosite și pune hainele, cărțile și jucăriile în locurile lor.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-teeth" data-points="5"><span class="task-box"></span><span class="task-name">🪥 Igiena de seară</span><button class="help-button" type="button" data-help-title="Rutina de seară" data-help="Spală-te pe dinți, pe față și pregătește hainele de somn.">?</button></label>
-            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-tomorrow" data-points="5"><span class="task-box"></span><span class="task-name">🗓️ Pregătit pentru mâine</span><button class="help-button" type="button" data-help-title="Cum mă pregătesc?" data-help="Verifică programul, ghiozdanul sau echipamentul și alege primul lucru important de mâine.">?</button></label>
-          </div></div></article>
-      </div>
-    </section>
-
-    <section class="rewards-section">
-      <div class="section-heading">
-        <h2>Recompense</h2>
-        <span class="muted">Necesită aprobarea părintelui</span>
-      </div>
-
-      <div class="reward-grid">
-        <article class="reward-card" data-id="ps" data-cost="60">
-          <span class="reward-emoji">🎮</span>
-          <h3>1 oră PS</h3>
-          <p>60 Spark · maximum o dată pe zi</p>
-          <button type="button" class="claim-button">Cere recompensa</button>
-        </article>
-
-        <article class="reward-card" data-id="boys-night" data-cost="150">
-          <span class="reward-emoji">🍿</span>
-          <h3>Seara băieților</h3>
-          <p>Film și popcorn · 150 Spark</p>
-          <button type="button" class="claim-button">Cere recompensa</button>
-        </article>
-
-        <article class="reward-card" data-id="cards" data-cost="250">
-          <span class="reward-emoji">🃏</span>
-          <h3>Cartonașe sportivi</h3>
-          <p>250 Spark</p>
-          <button type="button" class="claim-button">Cere recompensa</button>
-        </article>
-
-        <article class="reward-card" data-id="lego" data-cost="450">
-          <span class="reward-emoji">🧱</span>
-          <h3>Set LEGO mic</h3>
-          <p>450 Spark</p>
-          <button type="button" class="claim-button">Cere recompensa</button>
-        </article>
-
-        <article class="reward-card" data-id="zoo" data-cost="700">
-          <span class="reward-emoji">🦁</span>
-          <h3>Mini-excursie la zoo</h3>
-          <p>700 Spark</p>
-          <button type="button" class="claim-button">Cere recompensa</button>
-        </article>
-      </div>
-    </section>
-
-    <section class="history-section">
-      <div class="section-heading">
-        <h2>Istoric recompense</h2>
-        <span class="muted">Ultimele cereri</span>
-      </div>
-      <div id="publicHistory" class="history-list">
-        <p class="empty-state">Nu există încă cereri.</p>
-      </div>
-    </section>
-
-    <p id="message" class="message" role="status" aria-live="polite"></p>
-  </main>
-
-
-  <dialog id="taskHelpDialog" class="task-help-dialog">
-    <div class="task-help-card">
-      <button id="closeTaskHelp" class="close-button" type="button" aria-label="Închide">×</button>
-      <p class="eyebrow">Ghid opțional</p>
-      <h2 id="taskHelpTitle">Cum fac?</h2>
-      <p id="taskHelpText"></p>
-      <button id="closeTaskHelpBottom" class="primary-button" type="button">Am înțeles</button>
-    </div>
-  </dialog>
-
-  <dialog id="missionCompleteDialog" class="mission-complete-dialog">
-    <div class="mission-complete-card">
-      <div class="celebration-confetti" aria-hidden="true">✦ ✧ ✦ ✧ ✦</div>
-      <div class="celebration-check" aria-hidden="true">✓</div>
-      <p class="eyebrow">Misiune finalizată</p>
-      <h2 id="celebrationMission">Bravo!</h2>
-      <div class="celebration-reward" id="celebrationSpark">+0 Spark</div>
-      <div class="celebration-stats">
-        <span id="celebrationStreak">🔥 Streak: 0 zile</span>
-        <span id="celebrationLevel">⭐ Nivel 1</span>
-      </div>
-      <div class="celebration-otto">
-        <span class="celebration-otto-avatar" aria-hidden="true">🤖</span>
-        <p id="celebrationMessage">Încă un pas. Campionii nu renunță.</p>
-      </div>
-      <small class="celebration-saved">Salvat automat ✓</small>
-      <button id="closeMissionComplete" class="primary-button" type="button">Continuă →</button>
-    </div>
-  </dialog>
-
-  <dialog id="levelUpDialog" class="level-up-dialog">
-    <div class="level-up-card">
-      <span class="level-up-spark">✦</span>
-      <p class="eyebrow">Ai evoluat</p>
-      <h2>LEVEL UP!</h2>
-      <p id="levelUpMessage">Ai ajuns la nivelul următor.</p>
-      <button id="closeLevelUp" class="primary-button" type="button">Continuă aventura</button>
-    </div>
-  </dialog>
-
-  <dialog id="parentDialog" class="parent-dialog">
-    <form method="dialog" class="dialog-card">
-      <button id="closeDialog" class="close-button" value="cancel" aria-label="Închide">×</button>
-
-      <div id="parentAuth">
-        <p class="eyebrow">Zonă protejată</p>
-        <h2 id="pinTitle">PIN părinte</h2>
-        <p id="pinHelp" class="dialog-help"></p>
-        <input
-          id="pinInput"
-          class="pin-input"
-          type="password"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          maxlength="4"
-          autocomplete="off"
-          placeholder="••••"
-          aria-label="PIN părinte"
-        />
-        <button id="pinAction" class="primary-button" type="button">Continuă</button>
-        <p id="pinError" class="error-text"></p>
-      </div>
-
-      <div id="parentConsole" class="hidden">
-        <p class="eyebrow">Control parental</p>
-        <h2>Cereri în așteptare</h2>
-        <div id="pendingList" class="pending-list"></div>
-
-        <div class="parent-divider"></div>
-
-        <h3>Istoric complet</h3>
-        <div id="parentHistory" class="history-list"></div>
-
-        <p class="security-note">
+<section aria-label="Progres RPG" class="rpg-dashboard">
+<article class="level-card">
+<div class="level-orb">
+<span class="level-caption">LEVEL</span>
+<strong id="levelNumber">1</strong>
+</div>
+<div class="level-details">
+<div class="level-heading">
+<div>
+<p class="eyebrow">Drumul campionului</p>
+<h2 id="levelTitle">Începător curajos</h2>
+</div>
+<span class="level-progress-text" id="levelProgressText">0 / 500 Spark</span>
+</div>
+<div aria-label="Progres către nivelul următor" class="level-track">
+<div class="level-progress-bar" id="levelProgressBar"></div>
+</div>
+</div>
+</article>
+<div class="stat-grid">
+<article class="stat-card">
+<span class="stat-icon">🔥</span>
+<strong id="currentStreak">0</strong>
+<small>zile streak</small>
+</article>
+<article class="stat-card">
+<span class="stat-icon">🏆</span>
+<strong id="bestStreak">0</strong>
+<small>record streak</small>
+</article>
+<article class="stat-card">
+<span class="stat-icon">✓</span>
+<strong id="totalMissions">0</strong>
+<small>misiuni terminate</small>
+</article>
+<article class="stat-card">
+<span class="stat-icon">✦</span>
+<strong id="lifetimeSpark">0</strong>
+<small>Spark câștigați</small>
+</article>
+</div>
+</section>
+<section class="achievements-section">
+<div class="section-heading">
+<h2>Insigne</h2>
+<span class="muted" id="achievementCount">0 / 6 deblocate</span>
+</div>
+<div class="achievement-grid" id="achievementGrid"></div>
+</section>
+<section class="progress-card">
+<div class="progress-row">
+<span>Progresul zilei</span>
+<strong id="progressText">0 / 5 misiuni</strong>
+</div>
+<div aria-hidden="true" class="progress-track">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+</section>
+<section>
+<div class="section-heading">
+<h2>Misiuni</h2>
+<button class="ghost-button" id="resetButton" type="button">Resetează ziua</button>
+</div>
+<div class="mission-list" id="missions">
+<article class="mission-card" data-id="start">
+<div class="mission-main">
+<div class="mission-heading"><span class="mission-icon">🌅</span><div class="mission-content"><strong>Startul campionului</strong><small>4 pași simpli pentru un început bun.</small></div><span class="reward">10 ✦</span></div>
+<div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 4 bifate</small>
+<div class="task-list">
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="3" data-task-id="start-bed" type="checkbox"/><span class="task-box"></span><span class="task-name">🛏️ Făcut patul</span></label><button class="help-button" data-help="Întinde cearșaful și pilota, așază perna și pune pijamaua la loc." data-help-title="Cum fac patul?" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="3" data-task-id="start-teeth" type="checkbox"/><span class="task-box"></span><span class="task-name">🪥 Spălat pe dinți</span></label><button class="help-button" data-help="Periază toate suprafețele dinților aproximativ două minute, fără să apeși prea tare. Nu uita măselele și limba." data-help-title="Cum mă spăl corect pe dinți?" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="2" data-task-id="start-breakfast" type="checkbox"/><span class="task-box"></span><span class="task-name">🥣 Mic dejun</span></label><button class="help-button" data-help="Alege ceva simplu și hrănitor, bea apă și lasă locul curat după masă." data-help-title="Idee pentru micul dejun" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="2" data-task-id="start-plan" type="checkbox"/><span class="task-box"></span><span class="task-name">🧭 Planul zilei</span></label><button class="help-button" data-help="Privește activitățile zilei și alege cu ce începi. Pune mai întâi lucrurile importante." data-help-title="Cum îmi fac planul?" type="button">?</button></div>
+</div>
+</div>
+</article>
+<article class="mission-card" data-id="mind"><div class="mission-main">
+<div class="mission-heading"><span class="mission-icon">🧠</span><div class="mission-content"><strong>Mintea strategului</strong><small>Bifează activitățile făcute astăzi.</small></div><span class="reward">40 ✦</span></div>
+<div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+<div class="task-list">
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="15" data-task-id="mind-school" type="checkbox"/><span class="task-box"></span><span class="task-name">📘 Teme sau recapitulare</span></label><button class="help-button" data-help="Alege o singură materie, pregătește ce îți trebuie și lucrează fără alte ecrane." data-help-title="Cum încep?" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="10" data-task-id="mind-read" type="checkbox"/><span class="task-box"></span><span class="task-name">📚 Citit</span></label><button class="help-button" data-help="Alege cartea, citește intervalul stabilit și spune într-o propoziție ce ți-a plăcut." data-help-title="Idee pentru citit" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="15" data-task-id="mind-project" type="checkbox"/><span class="task-box"></span><span class="task-name">🧱 Proiect personal / LEGO / desen</span></label><button class="help-button" data-help="Continuă un proiect început sau creează ceva nou. Important este să lucrezi concentrat și să termini o etapă." data-help-title="Ce pot construi?" type="button">?</button></div>
+</div></div></article>
+<article class="mission-card" data-id="body"><div class="mission-main">
+<div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Mișcare pentru energie.</small></div><span class="reward">20 ✦</span></div>
+<div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+<div class="task-list">
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-push" type="checkbox"/><span class="task-box"></span><span class="task-name">⬆️ Flotări</span></label><button class="help-button" data-help="Ține corpul drept, coboară controlat și oprește-te dacă apare durere. Calitatea este mai importantă decât viteza." data-help-title="Flotări corecte" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-squat" type="checkbox"/><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span></label><button class="help-button" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor." data-help-title="Genuflexiuni corecte" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="8" data-task-id="body-move" type="checkbox"/><span class="task-box"></span><span class="task-name">🚲 Mișcare, joacă sau plimbare</span></label><button class="help-button" data-help="Bicicletă, fotbal, alergare, plimbare sau joacă activă. Alege ce îți place astăzi." data-help-title="Idei de mișcare" type="button">?</button></div>
+</div></div></article>
+<article class="mission-card" data-id="team"><div class="mission-main">
+<div class="mission-heading"><span class="mission-icon">🤝</span><div class="mission-content"><strong>Echipa</strong><small>Contribuie la binele familiei.</small></div><span class="reward">15 ✦</span></div>
+<div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+<div class="task-list">
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="team-time" type="checkbox"/><span class="task-box"></span><span class="task-name">👨‍👩‍👧‍👦 Timp cu familia</span></label><button class="help-button" data-help="O conversație, un joc, o plimbare sau o activitate făcută fără telefon." data-help-title="Ce înseamnă timp împreună?" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="team-help" type="checkbox"/><span class="task-box"></span><span class="task-name">🫶 Ajutor oferit</span></label><button class="help-button" data-help="Strânge masa, pune lucrurile la loc, ajută cu Iris sau întreabă direct cu ce poți fi de folos." data-help-title="Idei de ajutor" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="team-kind" type="checkbox"/><span class="task-box"></span><span class="task-name">💬 Un gest sau un cuvânt frumos</span></label><button class="help-button" data-help="Mulțumește, încurajează, laudă sincer sau fă un gest mic care ajută pe cineva." data-help-title="Idee" type="button">?</button></div>
+</div></div></article>
+<article class="mission-card" data-id="finish"><div class="mission-main">
+<div class="mission-heading"><span class="mission-icon">🌙</span><div class="mission-content"><strong>Închiderea zilei</strong><small>Pregătește un final liniștit.</small></div><span class="reward">15 ✦</span></div>
+<div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+<div class="task-list">
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="finish-order" type="checkbox"/><span class="task-box"></span><span class="task-name">🧹 Lucrurile puse la loc</span></label><button class="help-button" data-help="Strânge obiectele folosite și pune hainele, cărțile și jucăriile în locurile lor." data-help-title="Ordine rapidă" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="finish-teeth" type="checkbox"/><span class="task-box"></span><span class="task-name">🪥 Igiena de seară</span></label><button class="help-button" data-help="Spală-te pe dinți, pe față și pregătește hainele de somn." data-help-title="Rutina de seară" type="button">?</button></div>
+<div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="finish-tomorrow" type="checkbox"/><span class="task-box"></span><span class="task-name">🗓️ Pregătit pentru mâine</span></label><button class="help-button" data-help="Verifică programul, ghiozdanul sau echipamentul și alege primul lucru important de mâine." data-help-title="Cum mă pregătesc?" type="button">?</button></div>
+</div></div></article>
+</div>
+</section>
+<section class="rewards-section">
+<div class="section-heading">
+<h2>Recompense</h2>
+<span class="muted">Necesită aprobarea părintelui</span>
+</div>
+<div class="reward-grid">
+<article class="reward-card" data-cost="60" data-id="ps">
+<span class="reward-emoji">🎮</span>
+<h3>1 oră PS</h3>
+<p>60 Spark · maximum o dată pe zi</p>
+<button class="claim-button" type="button">Cere recompensa</button>
+</article>
+<article class="reward-card" data-cost="150" data-id="boys-night">
+<span class="reward-emoji">🍿</span>
+<h3>Seara băieților</h3>
+<p>Film și popcorn · 150 Spark</p>
+<button class="claim-button" type="button">Cere recompensa</button>
+</article>
+<article class="reward-card" data-cost="250" data-id="cards">
+<span class="reward-emoji">🃏</span>
+<h3>Cartonașe sportivi</h3>
+<p>250 Spark</p>
+<button class="claim-button" type="button">Cere recompensa</button>
+</article>
+<article class="reward-card" data-cost="450" data-id="lego">
+<span class="reward-emoji">🧱</span>
+<h3>Set LEGO mic</h3>
+<p>450 Spark</p>
+<button class="claim-button" type="button">Cere recompensa</button>
+</article>
+<article class="reward-card" data-cost="700" data-id="zoo">
+<span class="reward-emoji">🦁</span>
+<h3>Mini-excursie la zoo</h3>
+<p>700 Spark</p>
+<button class="claim-button" type="button">Cere recompensa</button>
+</article>
+</div>
+</section>
+<section class="history-section">
+<div class="section-heading">
+<h2>Istoric recompense</h2>
+<span class="muted">Ultimele cereri</span>
+</div>
+<div class="history-list" id="publicHistory">
+<p class="empty-state">Nu există încă cereri.</p>
+</div>
+</section>
+<p aria-live="polite" class="message" id="message" role="status"></p>
+</main>
+<dialog class="task-help-dialog" id="taskHelpDialog">
+<div class="task-help-card">
+<button aria-label="Închide" class="close-button" id="closeTaskHelp" type="button">×</button>
+<p class="eyebrow">Ghid opțional</p>
+<h2 id="taskHelpTitle">Cum fac?</h2>
+<p id="taskHelpText"></p>
+<button class="primary-button" id="closeTaskHelpBottom" type="button">Am înțeles</button>
+</div>
+</dialog>
+<dialog class="mission-complete-dialog" id="missionCompleteDialog">
+<div class="mission-complete-card">
+<div aria-hidden="true" class="celebration-confetti">✦ ✧ ✦ ✧ ✦</div>
+<div aria-hidden="true" class="celebration-check">✓</div>
+<p class="eyebrow">Misiune finalizată</p>
+<h2 id="celebrationMission">Bravo!</h2>
+<div class="celebration-reward" id="celebrationSpark">+0 Spark</div>
+<div class="celebration-stats">
+<span id="celebrationStreak">🔥 Streak: 0 zile</span>
+<span id="celebrationLevel">⭐ Nivel 1</span>
+</div>
+<div class="celebration-otto">
+<span aria-hidden="true" class="celebration-otto-avatar">🤖</span>
+<p id="celebrationMessage">Încă un pas. Campionii nu renunță.</p>
+</div>
+<small class="celebration-saved">Salvat automat ✓</small>
+<button class="primary-button" id="closeMissionComplete" type="button">Continuă →</button>
+</div>
+</dialog>
+<dialog class="level-up-dialog" id="levelUpDialog">
+<div class="level-up-card">
+<span class="level-up-spark">✦</span>
+<p class="eyebrow">Ai evoluat</p>
+<h2>LEVEL UP!</h2>
+<p id="levelUpMessage">Ai ajuns la nivelul următor.</p>
+<button class="primary-button" id="closeLevelUp" type="button">Continuă aventura</button>
+</div>
+</dialog>
+<dialog class="parent-dialog" id="parentDialog">
+<form class="dialog-card" method="dialog">
+<button aria-label="Închide" class="close-button" id="closeDialog" value="cancel">×</button>
+<div id="parentAuth">
+<p class="eyebrow">Zonă protejată</p>
+<h2 id="pinTitle">PIN părinte</h2>
+<p class="dialog-help" id="pinHelp"></p>
+<input aria-label="PIN părinte" autocomplete="off" class="pin-input" id="pinInput" inputmode="numeric" maxlength="4" pattern="[0-9]*" placeholder="••••" type="password">
+<button class="primary-button" id="pinAction" type="button">Continuă</button>
+<p class="error-text" id="pinError"></p>
+</input></div>
+<div class="hidden" id="parentConsole">
+<p class="eyebrow">Control parental</p>
+<h2>Cereri în așteptare</h2>
+<div class="pending-list" id="pendingList"></div>
+<div class="parent-divider"></div>
+<h3>Istoric complet</h3>
+<div class="history-list" id="parentHistory"></div>
+<p class="security-note">
           PIN-ul este o protecție simplă pentru familie, nu un sistem de securitate bancară.
         </p>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
+</div>
+</form>
+</dialog>
+<script src="app.js?v=5.5.0"></script>
 </body>
 </html>

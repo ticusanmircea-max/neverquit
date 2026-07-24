@@ -1001,3 +1001,113 @@ h1 {
 
 /* V5.4 task checklists */
 .task-list{display:grid;gap:8px;margin:13px 0 0 45px}.task-row{display:grid;grid-template-columns:26px minmax(0,1fr) 34px;align-items:center;gap:9px;padding:10px;border:1px solid rgba(148,163,184,.14);border-radius:12px;background:rgba(15,23,42,.38);cursor:pointer}.task-check{position:absolute;opacity:0}.task-box{width:24px;height:24px;display:grid;place-items:center;border:2px solid #64748b;border-radius:8px}.task-check:checked+.task-box{border-color:#4ade80;background:#16a34a}.task-check:checked+.task-box:after{content:"✓";color:white;font-weight:900}.task-check:checked~.task-name{color:#86efac;text-decoration:line-through;text-decoration-thickness:1px}.task-name{font-weight:720}.help-button{width:30px;height:30px;border:1px solid rgba(96,165,250,.3);border-radius:999px;color:#bfdbfe;background:rgba(37,99,235,.16);font-weight:900;cursor:pointer}.card-progress{height:7px;margin:13px 0 4px 45px;overflow:hidden;border-radius:999px;background:#1e293b}.card-progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#facc15);transition:width .25s ease}.card-progress-text{display:block;margin-left:45px;color:#94a3b8}.mission-card.completed{border-color:rgba(74,222,128,.38)}.task-help-dialog{width:min(calc(100% - 28px),470px);border:0;padding:0;border-radius:22px;color:#f8fafc;background:#0f172a;box-shadow:0 28px 100px rgba(0,0,0,.62)}.task-help-dialog::backdrop{background:rgba(2,6,23,.78);backdrop-filter:blur(3px)}.task-help-card{position:relative;padding:26px}.task-help-card h2{margin:4px 45px 10px 0}.task-help-card p:not(.eyebrow){color:#cbd5e1;line-height:1.6}.task-help-card .primary-button{width:100%;margin-top:14px}@media(max-width:520px){.task-list,.card-progress{margin-left:0}.card-progress-text{margin-left:0}.task-row{grid-template-columns:24px minmax(0,1fr) 32px;padding:9px}}
+
+/* V5.5 — mobile task layout and reliable controls */
+.task-list {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+}
+.task-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid rgba(148,163,184,.16);
+  border-radius: 14px;
+  background: rgba(15,23,42,.42);
+}
+.task-toggle {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  cursor: pointer;
+  user-select: none;
+}
+.task-check {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+.task-box {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #64748b;
+  border-radius: 8px;
+  background: rgba(2,6,23,.32);
+  transition: transform .16s ease, background .16s ease, border-color .16s ease;
+}
+.task-check:focus-visible + .task-box {
+  outline: 3px solid rgba(96,165,250,.58);
+  outline-offset: 3px;
+}
+.task-check:checked + .task-box {
+  border-color: #4ade80;
+  background: #16a34a;
+  transform: scale(1.04);
+}
+.task-check:checked + .task-box::after {
+  content: "✓";
+  color: #fff;
+  font-weight: 900;
+}
+.task-name {
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1.25;
+  font-size: .98rem;
+  font-weight: 760;
+}
+.task-check:checked ~ .task-name {
+  color: #86efac;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  opacity: .82;
+}
+.help-button {
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(96,165,250,.36);
+  border-radius: 999px;
+  color: #dbeafe;
+  background: rgba(37,99,235,.2);
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+.card-progress {
+  height: 8px;
+  margin: 13px 0 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #1e293b;
+}
+.card-progress-text {
+  display: block;
+  margin-left: 0;
+  color: #94a3b8;
+}
+.mission-card.completed {
+  border-color: rgba(74,222,128,.48);
+  box-shadow: 0 0 0 1px rgba(74,222,128,.08), 0 14px 36px rgba(22,163,74,.08);
+}
+@media (max-width: 520px) {
+  .mission-main { padding: 14px 12px; }
+  .mission-heading { grid-template-columns: 32px minmax(0,1fr) auto; }
+  .task-row { grid-template-columns: minmax(0,1fr) 34px; padding: 8px; }
+  .task-toggle { grid-template-columns: 27px minmax(0,1fr); gap: 9px; }
+  .task-name { font-size: .95rem; }
+}
