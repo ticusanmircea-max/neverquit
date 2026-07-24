@@ -1351,3 +1351,62 @@ body { padding-top: 76px; }
   .topbar-metric { font-size:.79rem; }
   .topbar-detail-grid { grid-template-columns:repeat(2,1fr); }
 }
+
+/* V6.1 — score bar only + real game welcome */
+body { padding-top: 82px; }
+.topbar-summary {
+  grid-template-columns: repeat(4, minmax(0,1fr)) auto;
+  gap: 8px;
+  min-height: 60px;
+  padding: 8px 10px;
+}
+.topbar-metric {
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+.topbar-metric b { font-size: 1.02rem; }
+.topbar-chevron { font-size: 1.3rem; }
+.topbar-brand { display:none !important; }
+
+.game-welcome {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin: 8px 0 18px;
+  padding: 18px;
+  border: 1px solid rgba(246,196,83,.26);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(246,196,83,.17), transparent 32%),
+    linear-gradient(145deg, rgba(34,46,74,.98), rgba(16,24,42,.98));
+  box-shadow: 0 12px 32px rgba(0,0,0,.22);
+}
+.welcome-otto {
+  width: 86px;
+  height: 86px;
+  flex: 0 0 86px;
+  object-fit: contain;
+  animation: bob 2s ease-in-out infinite;
+}
+.welcome-copy { min-width:0; }
+.welcome-copy .eyebrow { margin:0 0 2px; color:#f6c453; font-weight:900; letter-spacing:.12em; }
+.welcome-copy h1 { margin:0 0 5px; font-size:clamp(1.65rem,7vw,2.35rem); line-height:1.05; }
+.welcome-copy p:last-child { margin:0; color:#d8e1f0; font-size:1rem; line-height:1.42; font-weight:650; }
+
+/* Avoid repeated dashboard-like information on the mission screen. */
+.hero, .otto-card, .action-row, .install-help, .rpg-dashboard, .progress-card { display:none !important; }
+.section-heading { display:none; }
+.mission-sequence { display:none !important; }
+
+@media (max-width:520px) {
+  body { padding-top:78px; }
+  .topbar-summary { grid-template-columns:repeat(4,minmax(0,1fr)) auto; gap:4px; padding-inline:7px; }
+  .topbar-metric { font-size:.98rem; gap:3px; }
+  .topbar-metric b { font-size:.94rem; }
+  .game-welcome { gap:12px; padding:15px; margin-top:5px; }
+  .welcome-otto { width:72px; height:72px; flex-basis:72px; }
+  .welcome-copy p:last-child { font-size:.94rem; }
+}
