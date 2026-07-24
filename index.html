@@ -14,7 +14,7 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=5.7.0" rel="stylesheet"/>
+<link href="styles.css?v=5.8.0" rel="stylesheet"/>
 </head>
 <body>
 <main class="app-shell">
@@ -132,7 +132,7 @@
 </div>
 </div>
 </article>
-<article class="mission-card" data-id="mind"><div class="mission-main">
+<article class="mission-card" data-id="mind" hidden aria-hidden="true"><div class="mission-main">
 <div class="mission-heading"><span class="mission-icon">🧠</span><div class="mission-content"><strong>Mintea strategului</strong><small>Bifează activitățile făcute astăzi.</small></div><span class="reward">40 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
 <div class="task-list">
@@ -140,7 +140,7 @@
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="10" data-task-id="mind-read" type="checkbox"/><span class="task-box"></span><span class="task-name">📚 Citit</span></label><button class="help-button" data-help="Alege cartea, citește intervalul stabilit și spune într-o propoziție ce ți-a plăcut." data-help-title="Idee pentru citit" type="button">?</button></div>
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="15" data-task-id="mind-project" type="checkbox"/><span class="task-box"></span><span class="task-name">🧱 Proiect personal / LEGO / desen</span></label><button class="help-button" data-help="Continuă un proiect început sau creează ceva nou. Important este să lucrezi concentrat și să termini o etapă." data-help-title="Ce pot construi?" type="button">?</button></div>
 </div></div></article>
-<article class="mission-card" data-id="body"><div class="mission-main">
+<article class="mission-card" data-id="body" hidden aria-hidden="true"><div class="mission-main">
 <div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Mișcare pentru energie.</small></div><span class="reward">20 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
 <div class="task-list">
@@ -148,7 +148,7 @@
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-squat" type="checkbox"/><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span></label><button class="help-button" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor." data-help-title="Genuflexiuni corecte" type="button">?</button></div>
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="8" data-task-id="body-move" type="checkbox"/><span class="task-box"></span><span class="task-name">🚲 Mișcare, joacă sau plimbare</span></label><button class="help-button" data-help="Bicicletă, fotbal, alergare, plimbare sau joacă activă. Alege ce îți place astăzi." data-help-title="Idei de mișcare" type="button">?</button></div>
 </div></div></article>
-<article class="mission-card" data-id="team"><div class="mission-main">
+<article class="mission-card" data-id="team" hidden aria-hidden="true"><div class="mission-main">
 <div class="mission-heading"><span class="mission-icon">🤝</span><div class="mission-content"><strong>Echipa</strong><small>Contribuie la binele familiei.</small></div><span class="reward">15 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
 <div class="task-list">
@@ -156,7 +156,7 @@
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="team-help" type="checkbox"/><span class="task-box"></span><span class="task-name">🫶 Ajutor oferit</span></label><button class="help-button" data-help="Strânge masa, pune lucrurile la loc, ajută cu Iris sau întreabă direct cu ce poți fi de folos." data-help-title="Idei de ajutor" type="button">?</button></div>
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="team-kind" type="checkbox"/><span class="task-box"></span><span class="task-name">💬 Un gest sau un cuvânt frumos</span></label><button class="help-button" data-help="Mulțumește, încurajează, laudă sincer sau fă un gest mic care ajută pe cineva." data-help-title="Idee" type="button">?</button></div>
 </div></div></article>
-<article class="mission-card" data-id="finish"><div class="mission-main">
+<article class="mission-card" data-id="finish" hidden aria-hidden="true"><div class="mission-main">
 <div class="mission-heading"><span class="mission-icon">🌙</span><div class="mission-content"><strong>Închiderea zilei</strong><small>Pregătește un final liniștit.</small></div><span class="reward">15 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
 <div class="task-list">
@@ -216,7 +216,7 @@
 <section class="friends-section app-view" data-view="friends">
 <div class="section-heading"><h2>Prieteni</h2><span class="muted">În pregătire</span></div>
 <article class="friends-card">
-<div class="friends-otto otto-smile-face"><span class="otto-ear left"></span><span class="otto-ear right"></span><span class="otto-eye left"></span><span class="otto-eye right"></span><span class="otto-nose"></span><span class="otto-smile"></span></div>
+<img class="friends-otto otto-avatar-image" src="icons/otto-smile.svg?v=5.8.0" alt="Otto, vidra zâmbitoare NeverQuit">
 <div><h3>Echipa NeverQuit</h3><p>Într-o versiune viitoare, Iosif va putea adăuga prieteni aprobați de părinte, vedea progresul lor și participa la provocări sigure.</p></div>
 </article>
 </section>
@@ -249,7 +249,7 @@
 <span id="celebrationLevel">⭐ Nivel 1</span>
 </div>
 <div class="celebration-otto">
-<span aria-hidden="true" class="celebration-otto-avatar otto-smile-face"><span class="otto-ear left"></span><span class="otto-ear right"></span><span class="otto-eye left"></span><span class="otto-eye right"></span><span class="otto-nose"></span><span class="otto-smile"></span></span>
+<img aria-hidden="true" class="celebration-otto-avatar otto-avatar-image" src="icons/otto-smile.svg?v=5.8.0" alt="">
 <p id="celebrationMessage">Încă un pas. Campionii nu renunță.</p>
 </div>
 <small class="celebration-saved">Salvat automat ✓</small>
@@ -289,6 +289,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=5.7.0"></script>
+<script src="app.js?v=5.8.0"></script>
 </body>
 </html>

@@ -58,7 +58,7 @@ const bottomNavButtons = [...document.querySelectorAll(".bottom-nav-button")];
 const achievementNavBadge = document.getElementById("achievementNavBadge");
 const rewardNavBadge = document.getElementById("rewardNavBadge");
 
-const ACTIVE_MISSION_KEY = "neverquit_active_mission_v57";
+const ACTIVE_MISSION_KEY = "neverquit_active_mission_v58";
 const previousMissionButton = document.getElementById("previousMissionButton");
 const nextMissionButton = document.getElementById("nextMissionButton");
 const activeMissionName = document.getElementById("activeMissionName");
@@ -93,7 +93,10 @@ function renderMissionSequence() {
   }
 
   missionCards.forEach((card, index) => {
-    card.classList.toggle("sequence-hidden", index !== activeIndex);
+    const shouldHide = index !== activeIndex;
+    card.hidden = shouldHide;
+    card.classList.toggle("sequence-hidden", shouldHide);
+    card.setAttribute("aria-hidden", shouldHide ? "true" : "false");
   });
 
   const activeCard = missionCards[activeIndex];
@@ -625,6 +628,12 @@ function handleTaskChange(card, checkbox) {
     state.lastKnownLevel = newLevelInfo.level; saveState(); createSparkBurst(points, card);
     const taskName = checkbox.closest(".task-row").querySelector(".task-name")?.textContent || "Activitate bifată";
     showMissionCelebration({ missionName: cardCompleted ? card.querySelector(".mission-content strong").textContent : taskName, points, completedToday, newlyUnlocked, leveledUp: newLevelInfo.level > previousLevel, levelInfo: newLevelInfo, cardCompleted });
+    const currentIndex = missionCards.indexOf(card);
+    const progressNow = getCardProgress(card);
+    if (progressNow.percent >= 75 && currentIndex >= 0 && currentIndex < missionCards.length - 1) {
+      activeMissionId = missionCards[currentIndex + 1].dataset.id;
+      localStorage.setItem(ACTIVE_MISSION_KEY, activeMissionId);
+    }
     setMessage(`${taskName}: +${points} Spark.`); render(); return;
   }
   if (!checkbox.checked && wasChecked) {
