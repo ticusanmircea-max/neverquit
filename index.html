@@ -122,65 +122,54 @@
       </div>
 
       <div id="missions" class="mission-list">
-        <article class="mission-card" data-id="start" data-points="10">
-          <label>
-            <input type="checkbox" class="mission-check" />
-            <span class="checkmark"></span>
-            <span class="mission-content">
-              <strong>Startul campionului</strong>
-              <small>Pat, igienă, mic dejun și alegerea ordinii</small>
-            </span>
-            <span class="reward">+10 ✦</span>
-          </label>
+        <article class="mission-card" data-id="start">
+          <div class="mission-main">
+            <div class="mission-heading"><span class="mission-icon">🌅</span><div class="mission-content"><strong>Startul campionului</strong><small>4 pași simpli pentru un început bun.</small></div><span class="reward">10 ✦</span></div>
+            <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 4 bifate</small>
+            <div class="task-list">
+              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-bed" data-points="3"><span class="task-box"></span><span class="task-name">🛏️ Făcut patul</span><button class="help-button" type="button" data-help-title="Cum fac patul?" data-help="Întinde cearșaful și pilota, așază perna și pune pijamaua la loc.">?</button></label>
+              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-teeth" data-points="3"><span class="task-box"></span><span class="task-name">🪥 Spălat pe dinți</span><button class="help-button" type="button" data-help-title="Cum mă spăl corect pe dinți?" data-help="Periază toate suprafețele dinților aproximativ două minute, fără să apeși prea tare. Nu uita măselele și limba.">?</button></label>
+              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-breakfast" data-points="2"><span class="task-box"></span><span class="task-name">🥣 Mic dejun</span><button class="help-button" type="button" data-help-title="Idee pentru micul dejun" data-help="Alege ceva simplu și hrănitor, bea apă și lasă locul curat după masă.">?</button></label>
+              <label class="task-row"><input class="task-check" type="checkbox" data-task-id="start-plan" data-points="2"><span class="task-box"></span><span class="task-name">🧭 Planul zilei</span><button class="help-button" type="button" data-help-title="Cum îmi fac planul?" data-help="Privește activitățile zilei și alege cu ce începi. Pune mai întâi lucrurile importante.">?</button></label>
+            </div>
+          </div>
         </article>
 
-        <article class="mission-card" data-id="mind" data-points="40">
-          <label>
-            <input type="checkbox" class="mission-check" />
-            <span class="checkmark"></span>
-            <span class="mission-content">
-              <strong>Mintea strategului</strong>
-              <small>Două ore de teme, citit, Lego, desen sau proiect</small>
-            </span>
-            <span class="reward">+40 ✦</span>
-          </label>
-        </article>
+        <article class="mission-card" data-id="mind"><div class="mission-main">
+          <div class="mission-heading"><span class="mission-icon">🧠</span><div class="mission-content"><strong>Mintea strategului</strong><small>Bifează activitățile făcute astăzi.</small></div><span class="reward">40 ✦</span></div>
+          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+          <div class="task-list">
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-school" data-points="15"><span class="task-box"></span><span class="task-name">📘 Teme sau recapitulare</span><button class="help-button" type="button" data-help-title="Cum încep?" data-help="Alege o singură materie, pregătește ce îți trebuie și lucrează fără alte ecrane.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-read" data-points="10"><span class="task-box"></span><span class="task-name">📚 Citit</span><button class="help-button" type="button" data-help-title="Idee pentru citit" data-help="Alege cartea, citește intervalul stabilit și spune într-o propoziție ce ți-a plăcut.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="mind-project" data-points="15"><span class="task-box"></span><span class="task-name">🧱 Proiect personal / LEGO / desen</span><button class="help-button" type="button" data-help-title="Ce pot construi?" data-help="Continuă un proiect început sau creează ceva nou. Important este să lucrezi concentrat și să termini o etapă.">?</button></label>
+          </div></div></article>
 
-        <article class="mission-card" data-id="body" data-points="20">
-          <label>
-            <input type="checkbox" class="mission-check" />
-            <span class="checkmark"></span>
-            <span class="mission-content">
-              <strong>Corpul campionului</strong>
-              <small>20 flotări, 20 genuflexiuni, 20 abdomene și mișcare</small>
-            </span>
-            <span class="reward">+20 ✦</span>
-          </label>
-        </article>
+        <article class="mission-card" data-id="body"><div class="mission-main">
+          <div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Mișcare pentru energie.</small></div><span class="reward">20 ✦</span></div>
+          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+          <div class="task-list">
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-push" data-points="6"><span class="task-box"></span><span class="task-name">⬆️ Flotări</span><button class="help-button" type="button" data-help-title="Flotări corecte" data-help="Ține corpul drept, coboară controlat și oprește-te dacă apare durere. Calitatea este mai importantă decât viteza.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-squat" data-points="6"><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span><button class="help-button" type="button" data-help-title="Genuflexiuni corecte" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="body-move" data-points="8"><span class="task-box"></span><span class="task-name">🚲 Mișcare, joacă sau plimbare</span><button class="help-button" type="button" data-help-title="Idei de mișcare" data-help="Bicicletă, fotbal, alergare, plimbare sau joacă activă. Alege ce îți place astăzi.">?</button></label>
+          </div></div></article>
 
-        <article class="mission-card" data-id="team" data-points="15">
-          <label>
-            <input type="checkbox" class="mission-check" />
-            <span class="checkmark"></span>
-            <span class="mission-content">
-              <strong>Echipa</strong>
-              <small>Timp cu părinții și un gest de ajutor sau încurajare</small>
-            </span>
-            <span class="reward">+15 ✦</span>
-          </label>
-        </article>
+        <article class="mission-card" data-id="team"><div class="mission-main">
+          <div class="mission-heading"><span class="mission-icon">🤝</span><div class="mission-content"><strong>Echipa</strong><small>Contribuie la binele familiei.</small></div><span class="reward">15 ✦</span></div>
+          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+          <div class="task-list">
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-time" data-points="5"><span class="task-box"></span><span class="task-name">👨‍👩‍👧‍👦 Timp cu familia</span><button class="help-button" type="button" data-help-title="Ce înseamnă timp împreună?" data-help="O conversație, un joc, o plimbare sau o activitate făcută fără telefon.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-help" data-points="5"><span class="task-box"></span><span class="task-name">🫶 Ajutor oferit</span><button class="help-button" type="button" data-help-title="Idei de ajutor" data-help="Strânge masa, pune lucrurile la loc, ajută cu Iris sau întreabă direct cu ce poți fi de folos.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="team-kind" data-points="5"><span class="task-box"></span><span class="task-name">💬 Un gest sau un cuvânt frumos</span><button class="help-button" type="button" data-help-title="Idee" data-help="Mulțumește, încurajează, laudă sincer sau fă un gest mic care ajută pe cineva.">?</button></label>
+          </div></div></article>
 
-        <article class="mission-card" data-id="finish" data-points="15">
-          <label>
-            <input type="checkbox" class="mission-check" />
-            <span class="checkmark"></span>
-            <span class="mission-content">
-              <strong>Închiderea zilei</strong>
-              <small>Ordine, igienă, ecrane oprite și planul pentru mâine</small>
-            </span>
-            <span class="reward">+15 ✦</span>
-          </label>
-        </article>
+        <article class="mission-card" data-id="finish"><div class="mission-main">
+          <div class="mission-heading"><span class="mission-icon">🌙</span><div class="mission-content"><strong>Închiderea zilei</strong><small>Pregătește un final liniștit.</small></div><span class="reward">15 ✦</span></div>
+          <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
+          <div class="task-list">
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-order" data-points="5"><span class="task-box"></span><span class="task-name">🧹 Lucrurile puse la loc</span><button class="help-button" type="button" data-help-title="Ordine rapidă" data-help="Strânge obiectele folosite și pune hainele, cărțile și jucăriile în locurile lor.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-teeth" data-points="5"><span class="task-box"></span><span class="task-name">🪥 Igiena de seară</span><button class="help-button" type="button" data-help-title="Rutina de seară" data-help="Spală-te pe dinți, pe față și pregătește hainele de somn.">?</button></label>
+            <label class="task-row"><input class="task-check" type="checkbox" data-task-id="finish-tomorrow" data-points="5"><span class="task-box"></span><span class="task-name">🗓️ Pregătit pentru mâine</span><button class="help-button" type="button" data-help-title="Cum mă pregătesc?" data-help="Verifică programul, ghiozdanul sau echipamentul și alege primul lucru important de mâine.">?</button></label>
+          </div></div></article>
       </div>
     </section>
 
@@ -241,6 +230,16 @@
     <p id="message" class="message" role="status" aria-live="polite"></p>
   </main>
 
+
+  <dialog id="taskHelpDialog" class="task-help-dialog">
+    <div class="task-help-card">
+      <button id="closeTaskHelp" class="close-button" type="button" aria-label="Închide">×</button>
+      <p class="eyebrow">Ghid opțional</p>
+      <h2 id="taskHelpTitle">Cum fac?</h2>
+      <p id="taskHelpText"></p>
+      <button id="closeTaskHelpBottom" class="primary-button" type="button">Am înțeles</button>
+    </div>
+  </dialog>
 
   <dialog id="missionCompleteDialog" class="mission-complete-dialog">
     <div class="mission-complete-card">

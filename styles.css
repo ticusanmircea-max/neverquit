@@ -233,27 +233,95 @@ h1 {
   background: rgba(20, 83, 45, 0.2);
 }
 
-.mission-card label {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
+.mission-main {
   padding: 16px;
+}
+
+.mission-heading {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+}
+
+.mission-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(148, 163, 184, 0.12);
+  font-size: 20px;
+}
+
+.mission-content strong,
+.mission-content small {
+  display: block;
+}
+
+.mission-content small {
+  margin-top: 3px;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.mission-steps {
+  display: grid;
+  gap: 7px;
+  margin: 13px 0 14px 45px;
+  padding: 0;
+  list-style: none;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.mission-steps li {
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.34);
+  border: 1px solid rgba(148, 163, 184, 0.10);
+}
+
+.mission-complete-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 10px 14px;
+  border-radius: 13px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.52);
   cursor: pointer;
+  user-select: none;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.mission-complete-control:hover {
+  transform: translateY(-1px);
+  border-color: rgba(74, 222, 128, 0.35);
 }
 
 .mission-check {
   position: absolute;
   opacity: 0;
+  pointer-events: none;
 }
 
 .checkmark {
   width: 24px;
   height: 24px;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
   border: 2px solid #64748b;
   border-radius: 8px;
+}
+
+.mission-check:focus-visible + .checkmark {
+  outline: 3px solid rgba(96, 165, 250, 0.55);
+  outline-offset: 3px;
 }
 
 .mission-check:checked + .checkmark {
@@ -267,21 +335,36 @@ h1 {
   font-weight: 900;
 }
 
-.mission-content strong,
-.mission-content small {
-  display: block;
+.complete-label {
+  font-weight: 850;
+  color: #e2e8f0;
 }
 
-.mission-content small {
-  margin-top: 4px;
-  color: #94a3b8;
-  line-height: 1.35;
+.mission-card.completed .mission-complete-control {
+  border-color: rgba(74, 222, 128, 0.34);
+  background: rgba(22, 163, 74, 0.18);
+}
+
+.mission-card.completed .complete-label {
+  color: #86efac;
+}
+
+.mission-card.completed .mission-steps {
+  opacity: 0.72;
 }
 
 .reward {
   color: #fdba74;
   font-weight: 850;
   white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .mission-main { padding: 14px; }
+  .mission-heading { grid-template-columns: 32px minmax(0, 1fr) auto; gap: 9px; }
+  .mission-icon { width: 32px; height: 32px; font-size: 18px; }
+  .mission-steps { margin-left: 0; font-size: 0.88rem; }
+  .reward { font-size: 0.88rem; }
 }
 
 .rewards-section,
@@ -915,3 +998,6 @@ h1 {
 @keyframes check-bounce { 0% { transform:scale(.25) rotate(-18deg); opacity:0 } 70% { transform:scale(1.12) rotate(4deg); opacity:1 } 100% { transform:scale(1) rotate(0) } }
 @keyframes celebration-float { 50% { transform:translateY(5px); opacity:.6 } }
 @media (prefers-reduced-motion: reduce) { .mission-complete-card,.celebration-check,.celebration-confetti { animation:none !important; } }
+
+/* V5.4 task checklists */
+.task-list{display:grid;gap:8px;margin:13px 0 0 45px}.task-row{display:grid;grid-template-columns:26px minmax(0,1fr) 34px;align-items:center;gap:9px;padding:10px;border:1px solid rgba(148,163,184,.14);border-radius:12px;background:rgba(15,23,42,.38);cursor:pointer}.task-check{position:absolute;opacity:0}.task-box{width:24px;height:24px;display:grid;place-items:center;border:2px solid #64748b;border-radius:8px}.task-check:checked+.task-box{border-color:#4ade80;background:#16a34a}.task-check:checked+.task-box:after{content:"✓";color:white;font-weight:900}.task-check:checked~.task-name{color:#86efac;text-decoration:line-through;text-decoration-thickness:1px}.task-name{font-weight:720}.help-button{width:30px;height:30px;border:1px solid rgba(96,165,250,.3);border-radius:999px;color:#bfdbfe;background:rgba(37,99,235,.16);font-weight:900;cursor:pointer}.card-progress{height:7px;margin:13px 0 4px 45px;overflow:hidden;border-radius:999px;background:#1e293b}.card-progress-bar{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#22c55e,#facc15);transition:width .25s ease}.card-progress-text{display:block;margin-left:45px;color:#94a3b8}.mission-card.completed{border-color:rgba(74,222,128,.38)}.task-help-dialog{width:min(calc(100% - 28px),470px);border:0;padding:0;border-radius:22px;color:#f8fafc;background:#0f172a;box-shadow:0 28px 100px rgba(0,0,0,.62)}.task-help-dialog::backdrop{background:rgba(2,6,23,.78);backdrop-filter:blur(3px)}.task-help-card{position:relative;padding:26px}.task-help-card h2{margin:4px 45px 10px 0}.task-help-card p:not(.eyebrow){color:#cbd5e1;line-height:1.6}.task-help-card .primary-button{width:100%;margin-top:14px}@media(max-width:520px){.task-list,.card-progress{margin-left:0}.card-progress-text{margin-left:0}.task-row{grid-template-columns:24px minmax(0,1fr) 32px;padding:9px}}

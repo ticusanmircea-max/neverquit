@@ -1,4 +1,4 @@
-const CACHE_NAME = "neverquit-v4";
+const CACHE_NAME = "neverquit-v5-4-task-progress";
 const APP_SHELL = [
   "./",
   "./index.html",

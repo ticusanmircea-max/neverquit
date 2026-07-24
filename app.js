@@ -1,7 +1,9 @@
-const STORAGE_KEY = "neverquit_state_v2";
+const STORAGE_KEY = "neverquit_state_v3_tasks";
+const LEGACY_STORAGE_KEY = "neverquit_state_v2";
 
 const missionCards = [...document.querySelectorAll(".mission-card")];
-const missionChecks = [...document.querySelectorAll(".mission-check")];
+const taskChecks = [...document.querySelectorAll(".task-check")];
+const helpButtons = [...document.querySelectorAll(".help-button")];
 const rewardCards = [...document.querySelectorAll(".reward-card")];
 const sparkTotal = document.getElementById("sparkTotal");
 const reservedText = document.getElementById("reservedText");
@@ -46,6 +48,12 @@ const celebrationSpark = document.getElementById("celebrationSpark");
 const celebrationStreak = document.getElementById("celebrationStreak");
 const celebrationLevel = document.getElementById("celebrationLevel");
 const celebrationMessage = document.getElementById("celebrationMessage");
+const taskHelpDialog = document.getElementById("taskHelpDialog");
+const taskHelpTitle = document.getElementById("taskHelpTitle");
+const taskHelpText = document.getElementById("taskHelpText");
+const closeTaskHelp = document.getElementById("closeTaskHelp");
+const closeTaskHelpBottom = document.getElementById("closeTaskHelpBottom");
+
 
 const LEVELS = [
   { threshold: 0, title: "Începător curajos" },
@@ -96,7 +104,7 @@ function createDefaultState() {
   return {
     wallet: 0,
     currentDate: getTodayKey(),
-    dailyCompleted: {},
+    dailyTasks: {},
     requests: [],
     parentPin: null,
     totalEarned: 0,
@@ -112,26 +120,31 @@ function createDefaultState() {
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!saved || typeof saved !== "object") {
-      return createDefaultState();
+    if (saved && typeof saved === "object") {
+      return {
+        ...createDefaultState(), ...saved,
+        dailyTasks: saved.dailyTasks || {},
+        requests: Array.isArray(saved.requests) ? saved.requests : [],
+        totalEarned: Number.isFinite(saved.totalEarned) ? saved.totalEarned : Math.max(0, Number(saved.wallet) || 0),
+        completedDays: Array.isArray(saved.completedDays) ? saved.completedDays : [],
+        unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : [],
+        stats: { totalMissions: Number(saved.stats?.totalMissions) || 0 },
+      };
     }
-
-    return {
-      ...createDefaultState(),
-      ...saved,
-      dailyCompleted: saved.dailyCompleted || {},
-      requests: Array.isArray(saved.requests) ? saved.requests : [],
-      totalEarned: Number.isFinite(saved.totalEarned) ? saved.totalEarned : Math.max(0, Number(saved.wallet) || 0),
-      completedDays: Array.isArray(saved.completedDays) ? saved.completedDays : [],
-      unlockedAchievements: Array.isArray(saved.unlockedAchievements) ? saved.unlockedAchievements : [],
-      lastKnownLevel: Number.isFinite(saved.lastKnownLevel) ? saved.lastKnownLevel : 1,
-      stats: {
-        totalMissions: Number(saved.stats?.totalMissions) || 0,
-      },
-    };
-  } catch (error) {
-    return createDefaultState();
-  }
+    const legacy = JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY));
+    const migrated = createDefaultState();
+    if (legacy && typeof legacy === "object") {
+      Object.assign(migrated, legacy);
+      migrated.dailyTasks = {};
+      missionCards.forEach((card) => {
+        if (legacy.dailyCompleted?.[card.dataset.id]) {
+          card.querySelectorAll(".task-check").forEach((check) => migrated.dailyTasks[check.dataset.taskId] = true);
+        }
+      });
+      delete migrated.dailyCompleted;
+    }
+    return migrated;
+  } catch (error) { return createDefaultState(); }
 }
 
 let state = loadState();
@@ -144,7 +157,7 @@ function rolloverDayIfNeeded() {
   const today = getTodayKey();
   if (state.currentDate !== today) {
     state.currentDate = today;
-    state.dailyCompleted = {};
+    state.dailyTasks = {};
     saveState();
   }
 }
@@ -239,19 +252,16 @@ function createSparkBurst(points, card) {
   window.setTimeout(() => burst.remove(), 950);
 }
 
+function isCardComplete(card) {
+  const checks = [...card.querySelectorAll(".task-check")];
+  return checks.length > 0 && checks.every((check) => Boolean(state.dailyTasks[check.dataset.taskId]));
+}
+
 function recordCompletedDayIfNeeded() {
-  const allCompleted = missionCards.every((card) => Boolean(state.dailyCompleted[card.dataset.id]));
+  const allCompleted = taskChecks.every((check) => Boolean(state.dailyTasks[check.dataset.taskId]));
   const today = getTodayKey();
-
-  if (allCompleted && !state.completedDays.includes(today)) {
-    state.completedDays.push(today);
-    return true;
-  }
-
-  if (!allCompleted && state.completedDays.includes(today)) {
-    state.completedDays = state.completedDays.filter((day) => day !== today);
-  }
-
+  if (allCompleted && !state.completedDays.includes(today)) { state.completedDays.push(today); return true; }
+  if (!allCompleted && state.completedDays.includes(today)) state.completedDays = state.completedDays.filter((day) => day !== today);
   return false;
 }
 
@@ -328,19 +338,9 @@ function setMessage(text) {
 }
 
 function restoreMissionsFromState() {
-  missionCards.forEach((card) => {
-    const missionId = card.dataset.id;
-    const checked = Boolean(state.dailyCompleted[missionId]);
-    card.querySelector(".mission-check").checked = checked;
-  });
+  taskChecks.forEach((check) => { check.checked = Boolean(state.dailyTasks[check.dataset.taskId]); });
 }
-
-function calculateCompletedCards() {
-  return missionCards.filter((card) => {
-    const missionId = card.dataset.id;
-    return Boolean(state.dailyCompleted[missionId]);
-  });
-}
+function calculateCompletedTasks() { return taskChecks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])); }
 
 function renderHistory(container, limit = 6) {
   const items = [...state.requests]
@@ -431,13 +431,13 @@ function render() {
   rolloverDayIfNeeded();
   restoreMissionsFromState();
 
-  const completedCards = calculateCompletedCards();
+  const completedTasks = calculateCompletedTasks();
   const reserved = reservedSpark();
 
   sparkTotal.textContent = state.wallet;
   reservedText.textContent = reserved > 0 ? `${reserved} rezervați în cereri` : "";
-  progressText.textContent = `${completedCards.length} / ${missionCards.length} misiuni`;
-  progressBar.style.width = `${(completedCards.length / missionCards.length) * 100}%`;
+  progressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
+  progressBar.style.width = `${(completedTasks.length / taskChecks.length) * 100}%`;
 
   todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
     weekday: "long",
@@ -446,7 +446,12 @@ function render() {
   }).format(new Date());
 
   missionCards.forEach((card) => {
-    card.classList.toggle("completed", Boolean(state.dailyCompleted[card.dataset.id]));
+    const checks = [...card.querySelectorAll(".task-check")];
+    const done = checks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
+    const percent = checks.length ? (done / checks.length) * 100 : 0;
+    card.classList.toggle("completed", done === checks.length);
+    card.querySelector(".card-progress-bar").style.width = `${percent}%`;
+    card.querySelector(".card-progress-text").textContent = `${done} / ${checks.length} bifate`;
   });
 
   const pendingCount = pendingRequests().length;
@@ -462,21 +467,22 @@ function render() {
     renderPendingList();
   }
 
-  if (completedCards.length === missionCards.length) {
+  if (completedTasks.length === taskChecks.length) {
     setMessage("Toate misiunile sunt gata. Zi completă de campion!");
   }
 }
 
-function showMissionCelebration({ missionName, points, completedToday, newlyUnlocked, leveledUp, levelInfo }) {
+function showMissionCelebration({ missionName, points, completedToday, newlyUnlocked, leveledUp, levelInfo, cardCompleted }) {
   if (!missionCompleteDialog || missionCompleteDialog.open) return;
 
   const streak = getStreaks(state.completedDays).current;
   celebrationMission.textContent = missionName;
+  missionCompleteDialog.querySelector(".eyebrow").textContent = cardCompleted ? "Misiune finalizată" : "Progres înregistrat";
   celebrationSpark.textContent = `+${points} ✦ Spark`;
   celebrationStreak.textContent = `🔥 Streak: ${streak} ${streak === 1 ? "zi" : "zile"}`;
   celebrationLevel.textContent = `⭐ Nivel ${levelInfo.level}`;
 
-  let ottoText = "Încă un pas. Campionii nu renunță.";
+  let ottoText = cardCompleted ? "Misiune completă! Ai dus-o până la capăt." : "Super! Încă un pas bifat.";
   if (leveledUp) {
     ottoText = `🚀 Ai ajuns la Nivelul ${levelInfo.level}: ${levelInfo.current.title}!`;
   } else if (newlyUnlocked.length > 0) {
@@ -492,61 +498,34 @@ function showMissionCelebration({ missionName, points, completedToday, newlyUnlo
   missionCompleteDialog.showModal();
 }
 
-function handleMissionChange(card, checkbox) {
-  const missionId = card.dataset.id;
-  const points = Number(card.dataset.points);
-  const wasCompleted = Boolean(state.dailyCompleted[missionId]);
+function handleTaskChange(card, checkbox) {
+  const taskId = checkbox.dataset.taskId;
+  const points = Number(checkbox.dataset.points);
+  const wasChecked = Boolean(state.dailyTasks[taskId]);
+  const cardWasComplete = isCardComplete(card);
   const previousLevel = getLevelInfo(state.totalEarned).level;
 
-  if (checkbox.checked && !wasCompleted) {
-    state.dailyCompleted[missionId] = true;
-    state.wallet += points;
-    state.totalEarned += points;
-    state.stats.totalMissions += 1;
-
+  if (checkbox.checked && !wasChecked) {
+    state.dailyTasks[taskId] = true;
+    state.wallet += points; state.totalEarned += points;
+    const cardCompleted = isCardComplete(card);
+    if (cardCompleted && !cardWasComplete) state.stats.totalMissions += 1;
     const completedToday = recordCompletedDayIfNeeded();
     const newlyUnlocked = updateAchievements();
     const newLevelInfo = getLevelInfo(state.totalEarned);
-
-    state.lastKnownLevel = newLevelInfo.level;
-    saveState();
-    createSparkBurst(points, card);
-
-    const missionName = card.querySelector(".mission-content strong")?.textContent || "Misiune finalizată";
-    showMissionCelebration({
-      missionName,
-      points,
-      completedToday,
-      newlyUnlocked,
-      leveledUp: newLevelInfo.level > previousLevel,
-      levelInfo: newLevelInfo,
-    });
-    setMessage(`Misiune completată: +${points} Spark.`);
-
-    render();
-    return;
+    state.lastKnownLevel = newLevelInfo.level; saveState(); createSparkBurst(points, card);
+    const taskName = checkbox.closest(".task-row").querySelector(".task-name")?.textContent || "Activitate bifată";
+    showMissionCelebration({ missionName: cardCompleted ? card.querySelector(".mission-content strong").textContent : taskName, points, completedToday, newlyUnlocked, leveledUp: newLevelInfo.level > previousLevel, levelInfo: newLevelInfo, cardCompleted });
+    setMessage(`${taskName}: +${points} Spark.`); render(); return;
   }
-
-  if (!checkbox.checked && wasCompleted) {
-    if (state.wallet - points < reservedSpark()) {
-      checkbox.checked = true;
-      setMessage("Acești Spark sunt deja rezervați pentru o recompensă în așteptare.");
-      return;
-    }
-
-    state.dailyCompleted[missionId] = false;
-    state.wallet -= points;
-    state.totalEarned = Math.max(0, state.totalEarned - points);
-    state.stats.totalMissions = Math.max(0, state.stats.totalMissions - 1);
+  if (!checkbox.checked && wasChecked) {
+    if (state.wallet - points < reservedSpark()) { checkbox.checked = true; setMessage("Acești Spark sunt deja rezervați."); return; }
+    state.dailyTasks[taskId] = false;
+    state.wallet -= points; state.totalEarned = Math.max(0, state.totalEarned - points);
+    if (cardWasComplete) state.stats.totalMissions = Math.max(0, state.stats.totalMissions - 1);
     recordCompletedDayIfNeeded();
-    state.unlockedAchievements = state.unlockedAchievements.filter((id) => {
-      const achievement = ACHIEVEMENTS.find((item) => item.id === id);
-      return achievement ? achievement.test(state) : false;
-    });
-    state.lastKnownLevel = getLevelInfo(state.totalEarned).level;
-    saveState();
-    setMessage(`Misiunea a fost debifată: -${points} Spark.`);
-    render();
+    state.unlockedAchievements = state.unlockedAchievements.filter((id) => { const a=ACHIEVEMENTS.find((x)=>x.id===id); return a ? a.test(state) : false; });
+    state.lastKnownLevel = getLevelInfo(state.totalEarned).level; saveState(); setMessage("Activitatea a fost debifată."); render();
   }
 }
 
@@ -671,9 +650,17 @@ function handlePinAction() {
   renderPendingList();
 }
 
-missionChecks.forEach((checkbox) => {
+taskChecks.forEach((checkbox) => {
   const card = checkbox.closest(".mission-card");
-  checkbox.addEventListener("change", () => handleMissionChange(card, checkbox));
+  checkbox.addEventListener("change", () => handleTaskChange(card, checkbox));
+});
+helpButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault(); event.stopPropagation();
+    taskHelpTitle.textContent = button.dataset.helpTitle;
+    taskHelpText.textContent = button.dataset.help;
+    taskHelpDialog.showModal();
+  });
 });
 
 claimButtons.forEach((button) => {
@@ -682,8 +669,8 @@ claimButtons.forEach((button) => {
 });
 
 resetButton.addEventListener("click", () => {
-  const checkedCards = calculateCompletedCards();
-  const pointsToday = checkedCards.reduce((sum, card) => sum + Number(card.dataset.points), 0);
+  const checkedTasks = calculateCompletedTasks();
+  const pointsToday = checkedTasks.reduce((sum, check) => sum + Number(check.dataset.points), 0);
 
   if (pointsToday === 0) {
     setMessage("Nu există misiuni bifate pentru resetare.");
@@ -705,8 +692,9 @@ resetButton.addEventListener("click", () => {
 
   state.wallet -= pointsToday;
   state.totalEarned = Math.max(0, state.totalEarned - pointsToday);
-  state.stats.totalMissions = Math.max(0, state.stats.totalMissions - checkedCards.length);
-  state.dailyCompleted = {};
+  const completedCardsCount = missionCards.filter(isCardComplete).length;
+  state.stats.totalMissions = Math.max(0, state.stats.totalMissions - completedCardsCount);
+  state.dailyTasks = {};
   recordCompletedDayIfNeeded();
   state.unlockedAchievements = state.unlockedAchievements.filter((id) => {
     const achievement = ACHIEVEMENTS.find((item) => item.id === id);
@@ -718,6 +706,10 @@ resetButton.addEventListener("click", () => {
   render();
 });
 
+
+closeTaskHelp.addEventListener("click", () => taskHelpDialog.close());
+closeTaskHelpBottom.addEventListener("click", () => taskHelpDialog.close());
+taskHelpDialog.addEventListener("click", (event) => { if (event.target === taskHelpDialog) taskHelpDialog.close(); });
 
 closeMissionComplete.addEventListener("click", () => missionCompleteDialog.close());
 missionCompleteDialog.addEventListener("click", (event) => {
