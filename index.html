@@ -14,32 +14,23 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=6.3.0" rel="stylesheet"/>
+<link href="styles.css?v=6.4.0" rel="stylesheet"/>
 </head>
 <body>
 <main class="app-shell">
-<section aria-label="NeverQuit astăzi" class="game-brandbar"><div class="brand-title-row"><div><p class="brand-name">NEVERQUIT</p><p class="brand-motto">Fiecare pas aprinde un Spark.</p></div><time class="brand-date" id="todayLabel"></time></div></section><header class="compact-topbar" id="compactTopbar">
-<button aria-controls="topbarDetails" aria-expanded="false" class="topbar-summary" id="topbarToggle" type="button">
-<span class="topbar-metric"><span class="metric-icon">🔥</span><span><small>Streak</small><b id="topStreak">0</b></span></span>
-<span class="topbar-metric"><span class="metric-icon">🏆</span><span><small>Record</small><b id="topBestVisible">0</b></span></span>
-<span class="topbar-metric"><span class="metric-icon">✦</span><span><small>Spark</small><b id="topSpark">0</b></span></span>
-<span class="topbar-metric"><span class="metric-icon">⭐</span><span><small>Nivel</small><b id="topLevel">1</b></span></span>
-<span aria-hidden="true" class="topbar-chevron">⌄</span>
-</button>
-<div class="topbar-details" hidden="" id="topbarDetails"><div class="topbar-detail-grid compact-details">
-<div><span>Streak actual</span><strong><span id="topCurrentStreak">0</span> zile</strong></div>
-<div><span>Record personal</span><strong><span id="topBestStreak">0</span> zile</strong></div>
-</div>
-<div class="topbar-actions"><button id="topParentButton" type="button">Acces părinte</button><button id="topResetButton" type="button">Resetează ziua</button></div></div>
-</header>
-<section aria-label="Bun venit în NeverQuit" class="game-welcome">
-<img alt="Otto, vidra zâmbitoare" class="welcome-otto" src="icons/otto-smile.svg?v=6.1.0"/>
-<div class="welcome-copy">
 
-<h1>Bună, Iosif!</h1>
-<p id="welcomeMessage">Astăzi ai o singură provocare. Hai să o ducem până la capăt!</p>
-</div>
-</section><article class="level-card level-home-card">
+
+<header class="hero"><div class="hero-copy"><p class="eyebrow">NEVERQUIT</p><h1>NeverQuit</h1><p class="hero-date" id="todayLabel"></p><p class="subtitle">Fiecare pas aprinde un Spark.</p></div><section aria-label="Streak curent" class="streak-panel"><span class="streak-flame">🔥</span><div><strong id="topStreak">0</strong><span>zile streak</span></div></section></header><section aria-label="Bun venit în NeverQuit" class="game-welcome">
+<img alt="Otto, vidra zâmbitoare" class="welcome-otto" src="icons/otto-smile.svg?v=6.4.0"/>
+<div class="welcome-copy"><p class="eyebrow">OTTO ESTE CU TINE</p><h2 id="welcomeTitle">Bună, Iosif!</h2><p id="welcomeMessage">Astăzi ai o singură provocare. Hai să o ducem până la capăt!</p></div>
+</section>
+
+
+<section class="install-help hidden" id="installHelp">
+<strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
+    </section>
+<section aria-label="Progres RPG" class="rpg-dashboard app-view" data-view="missions">
+<article class="level-card">
 <div class="level-orb">
 <span class="level-caption">LEVEL</span>
 <strong id="levelNumber">1</strong>
@@ -56,68 +47,8 @@
 <div class="level-progress-bar" id="levelProgressBar"></div>
 </div>
 </div>
-</article><section class="progress-card daily-progress-card" data-view="missions">
-<div class="progress-row">
-<span>Progresul misiunilor de azi</span>
-<strong id="progressText">0 / 0 activități</strong>
-</div>
-<div aria-hidden="true" class="progress-track">
-<div class="progress-bar" id="progressBar"></div>
-</div>
-</section>
-<header class="hero">
-<div>
-<p class="eyebrow">Misiunea de azi</p>
-<h1>NEVERQUIT</h1>
-<p class="subtitle">Fiecare pas aprinde un Spark.</p>
-</div>
-<section aria-label="Sold Spark" class="spark-panel">
-<span class="spark-icon">✦</span>
-<div>
-<span class="spark-total" id="sparkTotal">0</span>
-<span class="spark-label">Spark disponibili</span>
-<small class="reserved-text" id="reservedText"></small>
-</div>
-</section>
-</header>
-<section class="otto-card"><div class="otto-avatar">🦦</div><div><h3>Otto</h3><p id="ottoMessage">Salut, Iosif! Hai să construim încă o zi de campion!</p></div></section>
-<section class="action-row">
-<span class="date-label" id="legacyTodayLabel"></span>
-<div class="top-actions">
-<button class="install-button hidden" id="installButton" type="button">Instalează</button>
-<button class="parent-button" id="parentButton" type="button">
-        Zonă părinte
-        <span class="badge hidden" id="pendingBadge">0</span>
-</button>
-</div>
-</section>
-<section class="install-help hidden" id="installHelp">
-<strong>Instalare pe Android:</strong> deschide meniul Chrome și alege „Instalează aplicația” sau „Adaugă pe ecranul principal”.
-    </section>
-<section aria-label="Progres RPG" class="rpg-dashboard legacy-dashboard" data-view="missions">
+</article>
 
-<div class="stat-grid">
-<article class="stat-card">
-<span class="stat-icon">🔥</span>
-<strong id="currentStreak">0</strong>
-<small>zile streak</small>
-</article>
-<article class="stat-card">
-<span class="stat-icon">🏆</span>
-<strong id="bestStreak">0</strong>
-<small>record streak</small>
-</article>
-<article class="stat-card">
-<span class="stat-icon">✓</span>
-<strong id="totalMissions">0</strong>
-<small>misiuni terminate</small>
-</article>
-<article class="stat-card">
-<span class="stat-icon">✦</span>
-<strong id="lifetimeSpark">0</strong>
-<small>Spark câștigați</small>
-</article>
-</div>
 </section>
 <section class="achievements-section app-view" data-view="achievements">
 <div class="section-heading">
@@ -126,11 +57,19 @@
 </div>
 <div class="achievement-grid" id="achievementGrid"></div>
 </section>
-
+<section class="progress-card app-view" data-view="missions">
+<div class="progress-row">
+<span>Progresul zilei</span>
+<strong id="progressText">0 / 5 misiuni</strong>
+</div>
+<div aria-hidden="true" class="progress-track">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+</section>
 <section class="app-view" data-view="missions">
 <div class="section-heading">
 <h2>Misiuni</h2>
-<button class="ghost-button" id="resetButton" type="button">Resetează ziua</button>
+
 </div>
 <div aria-live="polite" class="mission-sequence" id="missionSequence">
 <button class="mission-sequence-button" id="previousMissionButton" type="button">← Anterioara</button>
@@ -163,9 +102,9 @@
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="15" data-task-id="mind-project" type="checkbox"/><span class="task-box"></span><span class="task-name">🧱 Proiect personal / LEGO / desen</span></label><button class="help-button" data-help="Continuă un proiect început sau creează ceva nou. Important este să lucrezi concentrat și să termini o etapă." data-help-title="Ce pot construi?" type="button">?</button></div>
 </div></div></article>
 <article aria-hidden="true" class="mission-card" data-id="body" hidden=""><div class="mission-main">
-<div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Forță și kinetoterapie. Kineto este activitate bonus.</small></div><span class="reward">20 ✦</span></div>
+<div class="mission-heading"><span class="mission-icon">💪</span><div class="mission-content"><strong>Corpul campionului</strong><small>Forță și kinetoterapie. Finalizează toate cele 4 activități.</small></div><span class="reward">20 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 4 bifate</small>
-<div class="task-list"><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-push" type="checkbox"/><span class="task-box"></span><span class="task-name">⬆️ Flotări</span></label><button class="help-button" data-help="Ține corpul drept, coboară controlat și oprește-te dacă apare durere. Calitatea este mai importantă decât viteza." data-help-title="Flotări corecte" type="button">?</button></div><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-abs" type="checkbox"/><span class="task-box"></span><span class="task-name">🧱 Abdomene</span></label><button class="help-button" data-help="Execută lent și controlat, fără să tragi de ceafă. Oprește-te dacă apare durere." data-help-title="Abdomene corecte" type="button">?</button></div><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-squat" type="checkbox"/><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span></label><button class="help-button" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor." data-help-title="Genuflexiuni corecte" type="button">?</button></div><div class="task-row optional-task"><label class="task-toggle"><input class="task-check" data-optional="true" data-points="2" data-task-id="body-kineto" type="checkbox"/><span class="task-box"></span><span class="task-name">⭐ Kineto · bonus +2 Spark</span></label><button class="help-button" data-help="Execută exercițiile recomandate de kinetoterapeut, corect și fără grabă. Kineto este bonus și nu blochează următoarea misiune." data-help-title="Exercițiile de kineto" type="button">?</button></div></div></div></article>
+<div class="task-list"><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-push" type="checkbox"/><span class="task-box"></span><span class="task-name">⬆️ Flotări</span></label><button class="help-button" data-help="Ține corpul drept, coboară controlat și oprește-te dacă apare durere. Calitatea este mai importantă decât viteza." data-help-title="Flotări corecte" type="button">?</button></div><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-abs" type="checkbox"/><span class="task-box"></span><span class="task-name">🧱 Abdomene</span></label><button class="help-button" data-help="Execută lent și controlat, fără să tragi de ceafă. Oprește-te dacă apare durere." data-help-title="Abdomene corecte" type="button">?</button></div><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="6" data-task-id="body-squat" type="checkbox"/><span class="task-box"></span><span class="task-name">🦵 Genuflexiuni</span></label><button class="help-button" data-help="Ține tălpile stabile, spatele drept și genunchii orientați în direcția degetelor." data-help-title="Genuflexiuni corecte" type="button">?</button></div><div class="task-row"><label class="task-toggle"><input class="task-check" data-points="2" data-task-id="body-kineto" type="checkbox"/><span class="task-box"></span><span class="task-name">⭐ Kineto · +2 Spark</span></label><button class="help-button" data-help="Execută exercițiile recomandate de kinetoterapeut, corect și fără grabă. Kineto face parte din misiune și trebuie bifat înainte de a continua." data-help-title="Exercițiile de kineto" type="button">?</button></div></div></div></article>
 <article aria-hidden="true" class="mission-card" data-id="team" hidden=""><div class="mission-main">
 <div class="mission-heading"><span class="mission-icon">🤝</span><div class="mission-content"><strong>Echipa</strong><small>Contribuie la binele familiei.</small></div><span class="reward">15 ✦</span></div>
 <div class="card-progress"><div class="card-progress-bar"></div></div><small class="card-progress-text">0 / 3 bifate</small>
@@ -238,14 +177,25 @@
 <div><h3>Echipa NeverQuit</h3><p>Într-o versiune viitoare, Iosif va putea adăuga prieteni aprobați de părinte, vedea progresul lor și participa la provocări sigure.</p></div>
 </article>
 </section>
-<p aria-live="polite" class="message" id="message" role="status"></p>
+<section class="settings-section app-view" data-view="settings">
+<div class="section-heading"><h2>Setări</h2><span class="muted">Profil și control parental</span></div>
+<article class="settings-card">
+<div class="settings-group"><p class="eyebrow">Profil copil</p>
+<label class="settings-label">Numele copilului<input id="childNameInput" maxlength="30" placeholder="Iosif" type="text"/></label>
+<label class="settings-label">Vârsta<input id="childAgeInput" inputmode="numeric" max="18" min="3" placeholder="10" type="number"/></label>
+<button class="primary-button settings-save" id="saveProfileButton" type="button">Salvează profilul</button></div>
+<div class="settings-divider"></div>
+<div class="settings-group"><p class="eyebrow">Control parental</p>
+<button class="settings-action" id="parentButton" type="button"><span>🔒</span><div><strong>Acces părinte</strong><small>Cereri, aprobare recompense și istoric</small></div><span class="badge hidden" id="pendingBadge">0</span><b>›</b></button>
+<button class="settings-action danger" id="resetButton" type="button"><span>↻</span><div><strong>Resetează ziua</strong><small>Șterge activitățile bifate astăzi</small></div><b>›</b></button>
+</div></article></section><p aria-live="polite" class="message" id="message" role="status"></p>
 </main>
 <nav aria-label="Navigație principală" class="bottom-nav">
 <button class="bottom-nav-button active" data-target-view="missions" type="button"><span class="nav-icon">🎯</span><span>Misiuni</span></button>
 <button class="bottom-nav-button" data-target-view="achievements" type="button"><span class="nav-icon">🏅</span><span>Insigne</span><span class="nav-notification hidden" id="achievementNavBadge">0</span></button>
 <button class="bottom-nav-button" data-target-view="rewards" type="button"><span class="nav-icon">🎁</span><span>Recompense</span><span class="nav-notification hidden" id="rewardNavBadge">0</span></button>
 <button class="bottom-nav-button" data-target-view="friends" type="button"><span class="nav-icon">👥</span><span>Prieteni</span></button>
-</nav>
+<button class="bottom-nav-button" data-target-view="settings" type="button"><span class="nav-icon">⚙️</span><span>Setări</span></button></nav>
 <dialog class="task-help-dialog" id="taskHelpDialog">
 <div class="task-help-card">
 <button aria-label="Închide" class="close-button" id="closeTaskHelp" type="button">×</button>
@@ -307,6 +257,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=6.3.0"></script>
+<script src="app.js?v=6.4.0"></script>
 </body>
 </html>

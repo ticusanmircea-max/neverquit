@@ -1588,3 +1588,33 @@ body { padding-top: 158px !important; }
   .level-home-card .level-heading h2 { font-size:1.03rem; }
   .level-home-card .level-progress-text { font-size:.75rem; }
 }
+
+
+/* V6.4 — titlu cu streak, setări și progres sportiv complet */
+.hero { align-items:flex-start; margin-bottom:16px; padding-top:4px; }
+.hero-copy h1 { font-size:clamp(2.25rem,9vw,3.9rem); margin-bottom:7px; }
+.hero-date { margin:0 0 5px; color:#cbd5e1; font-size:.86rem; text-transform:capitalize; }
+.streak-panel { min-width:128px; display:flex; align-items:center; justify-content:center; gap:9px; padding:13px 15px; border:1px solid rgba(249,115,22,.42); border-radius:20px; background:linear-gradient(145deg,rgba(124,45,18,.42),rgba(30,41,59,.9)); box-shadow:0 12px 30px rgba(0,0,0,.25); }
+.streak-flame { font-size:2rem; filter:drop-shadow(0 0 10px rgba(249,115,22,.55)); }
+.streak-panel strong { display:block; font-size:1.75rem; line-height:1; }
+.streak-panel span:last-child { display:block; margin-top:4px; color:#fdba74; font-size:.68rem; font-weight:800; text-transform:uppercase; }
+.game-welcome { margin-bottom:14px; }
+.rpg-dashboard { margin-top:0; }
+.settings-card { border:1px solid rgba(148,163,184,.18); border-radius:22px; padding:18px; background:rgba(15,23,42,.82); box-shadow:0 14px 38px rgba(0,0,0,.22); }
+.settings-group { display:grid; gap:12px; }
+.settings-label { display:grid; gap:7px; color:#cbd5e1; font-size:.82rem; font-weight:750; }
+.settings-label input { width:100%; border:1px solid rgba(148,163,184,.25); border-radius:13px; padding:13px 14px; color:#f8fafc; background:#0f172a; outline:none; }
+.settings-label input:focus { border-color:#fb923c; box-shadow:0 0 0 3px rgba(251,146,60,.12); }
+.settings-save { width:100%; margin-top:2px; }
+.settings-divider { height:1px; margin:20px 0; background:rgba(148,163,184,.16); }
+.settings-action { width:100%; display:grid; grid-template-columns:32px minmax(0,1fr) auto auto; align-items:center; gap:10px; padding:14px 4px; border:0; border-bottom:1px solid rgba(148,163,184,.13); color:#f8fafc; background:transparent; text-align:left; cursor:pointer; }
+.settings-action:last-child { border-bottom:0; }
+.settings-action > span:first-child { font-size:1.25rem; text-align:center; }
+.settings-action div { min-width:0; }
+.settings-action strong,.settings-action small { display:block; }
+.settings-action small { margin-top:3px; color:#94a3b8; font-size:.72rem; }
+.settings-action > b { color:#64748b; font-size:1.5rem; }
+.settings-action.danger strong { color:#fca5a5; }
+.bottom-nav { grid-template-columns:repeat(5,minmax(0,1fr)); }
+.bottom-nav-button { font-size:.64rem; padding:8px 2px; }
+@media (max-width:420px) { .hero { gap:10px; } .streak-panel { min-width:108px; padding:11px 10px; } .streak-panel strong { font-size:1.5rem; } .bottom-nav-button span:not(.nav-icon):not(.nav-notification) { font-size:.58rem; } }

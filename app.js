@@ -57,6 +57,14 @@ const closeTaskHelpBottom = document.getElementById("closeTaskHelpBottom");
 const bottomNavButtons = [...document.querySelectorAll(".bottom-nav-button")];
 const achievementNavBadge = document.getElementById("achievementNavBadge");
 const rewardNavBadge = document.getElementById("rewardNavBadge");
+const childNameInput = document.getElementById("childNameInput");
+const childAgeInput = document.getElementById("childAgeInput");
+const saveProfileButton = document.getElementById("saveProfileButton");
+const welcomeTitle = document.getElementById("welcomeTitle");
+const PROFILE_KEY = "neverquit_child_profile_v1";
+function loadChildProfile() { try { return { name: "Iosif", age: "10", ...JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}") }; } catch { return { name: "Iosif", age: "10" }; } }
+function renderChildProfile() { const profile = loadChildProfile(); if (childNameInput) childNameInput.value = profile.name || ""; if (childAgeInput) childAgeInput.value = profile.age || ""; if (welcomeTitle) welcomeTitle.textContent = `Bună, ${profile.name || "campionule"}!`; }
+
 const topbarToggle = document.getElementById("topbarToggle");
 const topbarDetails = document.getElementById("topbarDetails");
 const topStreak = document.getElementById("topStreak");
@@ -82,7 +90,7 @@ let activeMissionId = localStorage.getItem(ACTIVE_MISSION_KEY) || missionCards[0
 
 function getCardProgress(card) {
   const checks = [...card.querySelectorAll(".task-check")];
-  const requiredChecks = checks.filter((check) => check.dataset.optional !== "true");
+  const requiredChecks = checks;
   const done = checks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
   const requiredDone = requiredChecks.filter((check) => Boolean(state.dailyTasks[check.dataset.taskId])).length;
   return {
@@ -585,6 +593,8 @@ function render() {
   if (topProgressText) topProgressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
   if (topProgressBar) topProgressBar.style.width = `${dayPercent}%`;
 
+  renderChildProfile();
+
   if (todayLabel) todayLabel.textContent = new Intl.DateTimeFormat("ro-RO", {
     weekday: "long",
     day: "numeric",
@@ -923,7 +933,7 @@ render();
 
 
 if (topbarToggle && topbarDetails) {
-  topbarToggle.addEventListener("click", () => {
+  if (topbarToggle) topbarToggle.addEventListener("click", () => {
     const willOpen = topbarDetails.hidden;
     topbarDetails.hidden = !willOpen;
     topbarToggle.setAttribute("aria-expanded", String(willOpen));
@@ -959,6 +969,15 @@ window.addEventListener("appinstalled", () => {
   setMessage("NeverQuit a fost instalată pe dispozitiv.");
   installButton.classList.add("hidden");
   installHelp.classList.add("hidden");
+});
+
+
+if (saveProfileButton) saveProfileButton.addEventListener("click", () => {
+  const name = (childNameInput?.value || "").trim() || "Iosif";
+  const age = String(childAgeInput?.value || "").trim();
+  localStorage.setItem(PROFILE_KEY, JSON.stringify({ name, age }));
+  renderChildProfile();
+  setMessage("Profilul copilului a fost salvat.");
 });
 
 if ("serviceWorker" in navigator) {
