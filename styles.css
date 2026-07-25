@@ -1618,3 +1618,182 @@ body { padding-top: 158px !important; }
 .bottom-nav { grid-template-columns:repeat(5,minmax(0,1fr)); }
 .bottom-nav-button { font-size:.64rem; padding:8px 2px; }
 @media (max-width:420px) { .hero { gap:10px; } .streak-panel { min-width:108px; padding:11px 10px; } .streak-panel strong { font-size:1.5rem; } .bottom-nav-button span:not(.nav-icon):not(.nav-notification) { font-size:.58rem; } }
+
+/* V6.5 — audit structural, functional and visual consolidation */
+:root {
+  --nq-surface: #111a2b;
+  --nq-surface-2: #172238;
+  --nq-border: rgba(148, 163, 184, .18);
+  --nq-muted: #9fb0c8;
+  --nq-text: #f8fafc;
+  --nq-accent: #f6c453;
+  --nq-orange: #fb923c;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  padding-top: max(14px, env(safe-area-inset-top)) !important;
+  padding-bottom: calc(94px + env(safe-area-inset-bottom)) !important;
+  overflow-x: hidden;
+}
+.app-shell { width: min(100%, 760px); margin: 0 auto; padding-inline: 14px; }
+
+/* Header: title + date/motto left, streak right. */
+.hero {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 0 0 14px !important;
+  padding: 4px 0 0 !important;
+}
+.hero-copy { min-width: 0; }
+.hero-copy .eyebrow { margin-bottom: 3px; color: var(--nq-accent); }
+.hero-copy h1 { margin: 0 0 5px; font-size: clamp(2rem, 8vw, 3.3rem); line-height: .98; letter-spacing: -.045em; }
+.hero-date { margin: 0 0 5px; color: #cbd5e1; font-size: .82rem; text-transform: capitalize; }
+.hero .subtitle { margin: 0; color: var(--nq-accent); font-size: .88rem; font-weight: 800; }
+.streak-panel {
+  flex: 0 0 auto;
+  min-width: 112px;
+  padding: 11px 12px;
+  border-radius: 18px;
+}
+.streak-panel strong { font-size: 1.65rem; }
+.streak-panel span:last-child { white-space: nowrap; }
+
+/* Welcome and progression hierarchy. */
+.game-welcome {
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 12px !important;
+  padding: 15px;
+  border: 1px solid var(--nq-border);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(30,41,59,.98), rgba(15,23,42,.98));
+}
+.welcome-otto { flex: 0 0 82px; width: 82px; height: 82px; object-fit: contain; }
+.welcome-copy { min-width: 0; }
+.welcome-copy h2 { margin: 2px 0 5px; font-size: clamp(1.25rem, 5vw, 1.65rem); }
+.welcome-copy p:last-child { margin: 0; color: #cbd5e1; line-height: 1.42; }
+
+.rpg-dashboard { margin: 0 0 12px !important; }
+.level-card {
+  display: flex !important;
+  align-items: center;
+  gap: 13px;
+  margin: 0 !important;
+  padding: 14px;
+  border: 1px solid rgba(246,196,83,.24);
+  border-radius: 22px;
+  background: linear-gradient(145deg,#1c2942,#151f34);
+}
+.level-orb { flex: 0 0 68px; width: 68px; height: 68px; }
+.level-details { min-width: 0; flex: 1; }
+.level-heading { gap: 8px; }
+.level-heading h2 { font-size: 1.08rem; }
+.level-progress-text { flex: 0 0 auto; font-size: .76rem; white-space: nowrap; }
+.level-track { height: 10px; }
+
+.progress-card {
+  display: block !important;
+  margin: 0 0 14px !important;
+  padding: 14px 15px;
+  border-radius: 18px;
+}
+.progress-row { margin-bottom: 9px; }
+.progress-row span, .progress-row strong { font-size: .84rem; }
+.progress-track { height: 11px; }
+
+/* Mission area. Keep a single active mission without redundant headings. */
+.app-view[data-view="missions"] > .section-heading { display: none !important; }
+.mission-sequence { display: none !important; }
+.mission-card { overflow: hidden; border-radius: 22px; }
+.mission-main { padding: 15px; }
+.mission-heading { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 10px; align-items: center; }
+.mission-icon { width: 42px; height: 42px; display: grid; place-items: center; font-size: 1.6rem; }
+.mission-content { min-width: 0; }
+.mission-content strong { display: block; font-size: 1.06rem; }
+.mission-content small { display: block; margin-top: 3px; line-height: 1.3; }
+.reward { white-space: nowrap; align-self: start; }
+
+.task-list { display: grid; gap: 9px; margin-top: 12px; }
+.task-row {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 38px !important;
+  align-items: center !important;
+  min-height: 58px !important;
+  padding: 7px 8px 7px 10px !important;
+  border: 1px solid rgba(148,163,184,.15);
+  border-radius: 15px;
+  background: rgba(15,23,42,.62);
+}
+.task-toggle {
+  display: grid !important;
+  grid-template-columns: 30px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0;
+  width: 100%;
+  cursor: pointer;
+}
+.task-box { width: 28px !important; height: 28px !important; }
+.task-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+  font-size: .98rem !important;
+  line-height: 1.2;
+}
+.help-button {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  justify-self: end;
+  border-radius: 50%;
+}
+.task-row:has(.task-check:checked) { opacity: .78; background: rgba(16,185,129,.07); }
+.task-row:has(.task-check:focus-visible) { outline: 3px solid rgba(251,146,60,.22); outline-offset: 2px; }
+
+/* Settings and bottom navigation. */
+.settings-section { padding-bottom: 8px; }
+.settings-card { margin-top: 4px; }
+.bottom-nav {
+  grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+  padding-bottom: max(7px, env(safe-area-inset-bottom));
+}
+.bottom-nav-button { min-width: 0; }
+.bottom-nav-button > span:not(.nav-icon):not(.nav-notification) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Old removed top-bar system must never affect layout. */
+.game-brandbar, .compact-topbar, .topbar-details, .legacy-dashboard, .stat-grid, .otto-card, .action-row, .install-help { display: none !important; }
+
+@media (max-width: 460px) {
+  .app-shell { padding-inline: 11px; }
+  .hero { gap: 9px; }
+  .hero-copy h1 { font-size: 2.15rem; }
+  .hero .subtitle { font-size: .76rem; }
+  .hero-date { font-size: .72rem; }
+  .streak-panel { min-width: 98px; padding: 9px 9px; gap: 6px; }
+  .streak-flame { font-size: 1.65rem; }
+  .streak-panel strong { font-size: 1.45rem; }
+  .streak-panel span:last-child { font-size: .58rem; }
+  .game-welcome { gap: 11px; padding: 13px; }
+  .welcome-otto { flex-basis: 72px; width: 72px; height: 72px; }
+  .welcome-copy .eyebrow { font-size: .63rem; }
+  .welcome-copy p:last-child { font-size: .82rem; }
+  .level-card { gap: 10px; padding: 12px; }
+  .level-orb { flex-basis: 60px; width: 60px; height: 60px; }
+  .level-heading { align-items: flex-start; flex-direction: column; }
+  .level-progress-text { margin-top: 2px; }
+  .mission-main { padding: 13px; }
+  .mission-heading { grid-template-columns: 38px minmax(0,1fr) auto; gap: 8px; }
+  .mission-icon { width: 38px; height: 38px; }
+  .reward { font-size: .72rem; }
+  .task-row { min-height: 56px !important; }
+  .task-name { font-size: .93rem !important; }
+  .bottom-nav-button { padding-inline: 1px; font-size: .57rem; }
+  .bottom-nav-button .nav-icon { font-size: 1.24rem; }
+}

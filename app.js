@@ -396,10 +396,10 @@ function renderRpg() {
     levelProgressText.textContent = `${state.totalEarned} Spark · nivel maxim`;
   }
 
-  currentStreak.textContent = streaks.current;
-  bestStreak.textContent = streaks.best;
-  totalMissions.textContent = state.stats.totalMissions;
-  lifetimeSpark.textContent = state.totalEarned;
+  if (currentStreak) currentStreak.textContent = streaks.current;
+  if (bestStreak) bestStreak.textContent = streaks.best;
+  if (totalMissions) totalMissions.textContent = state.stats.totalMissions;
+  if (lifetimeSpark) lifetimeSpark.textContent = state.totalEarned;
 
   achievementCount.textContent = `${state.unlockedAchievements.length} / ${ACHIEVEMENTS.length} deblocate`;
   achievementGrid.innerHTML = ACHIEVEMENTS.map((achievement) => {
@@ -524,12 +524,16 @@ function getNewAvailableRewardIds() {
 
 function renderBottomNotifications() {
   const achievementCountUnread = state.unreadAchievementIds.length;
-  achievementNavBadge.textContent = achievementCountUnread;
-  achievementNavBadge.classList.toggle("hidden", achievementCountUnread === 0);
+  if (achievementNavBadge) {
+    achievementNavBadge.textContent = achievementCountUnread;
+    achievementNavBadge.classList.toggle("hidden", achievementCountUnread === 0);
+  }
 
   const newRewards = getNewAvailableRewardIds();
-  rewardNavBadge.textContent = newRewards.length;
-  rewardNavBadge.classList.toggle("hidden", newRewards.length === 0);
+  if (rewardNavBadge) {
+    rewardNavBadge.textContent = newRewards.length;
+    rewardNavBadge.classList.toggle("hidden", newRewards.length === 0);
+  }
 }
 
 function switchView(view) {
@@ -573,11 +577,13 @@ function render() {
   const completedTasks = calculateCompletedTasks();
   const reserved = reservedSpark();
 
-  sparkTotal.textContent = state.wallet;
-  reservedText.textContent = reserved > 0 ? `${reserved} rezervați în cereri` : "";
-  progressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
-  progressBar.style.width = `${taskChecks.length ? (completedTasks.length / taskChecks.length) * 100 : 0}%`;
-  progressBar.setAttribute("aria-valuenow", String(completedTasks.length));
+  if (sparkTotal) sparkTotal.textContent = state.wallet;
+  if (reservedText) reservedText.textContent = reserved > 0 ? `${reserved} rezervați în cereri` : "";
+  if (progressText) progressText.textContent = `${completedTasks.length} / ${taskChecks.length} activități`;
+  if (progressBar) {
+    progressBar.style.width = `${taskChecks.length ? (completedTasks.length / taskChecks.length) * 100 : 0}%`;
+    progressBar.setAttribute("aria-valuenow", String(completedTasks.length));
+  }
   const dayPercent = taskChecks.length ? Math.round((completedTasks.length / taskChecks.length) * 100) : 0;
   const streakInfo = getStreaks(state.completedDays);
   const topLevelInfo = getLevelInfo(state.totalEarned);
@@ -846,7 +852,7 @@ claimButtons.forEach((button) => {
   button.addEventListener("click", () => requestReward(card));
 });
 
-resetButton.addEventListener("click", () => {
+if (resetButton) resetButton.addEventListener("click", () => {
   const checkedTasks = calculateCompletedTasks();
   const pointsToday = checkedTasks.reduce((sum, check) => sum + Number(check.dataset.points), 0);
 
@@ -900,9 +906,9 @@ levelUpDialog.addEventListener("click", (event) => {
   if (event.target === levelUpDialog) levelUpDialog.close();
 });
 
-parentButton.addEventListener("click", openParentDialog);
-pinAction.addEventListener("click", handlePinAction);
-pinInput.addEventListener("keydown", (event) => {
+if (parentButton) parentButton.addEventListener("click", openParentDialog);
+if (pinAction) pinAction.addEventListener("click", handlePinAction);
+if (pinInput) pinInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     event.preventDefault();
     handlePinAction();
@@ -950,25 +956,25 @@ let deferredInstallPrompt = null;
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
-  installButton.classList.remove("hidden");
+  if (installButton) installButton.classList.remove("hidden");
 });
 
-installButton.addEventListener("click", async () => {
+if (installButton) installButton.addEventListener("click", async () => {
   if (!deferredInstallPrompt) {
-    installHelp.classList.remove("hidden");
+    if (installHelp) installHelp.classList.remove("hidden");
     return;
   }
 
   deferredInstallPrompt.prompt();
   await deferredInstallPrompt.userChoice;
   deferredInstallPrompt = null;
-  installButton.classList.add("hidden");
+  if (installButton) installButton.classList.add("hidden");
 });
 
 window.addEventListener("appinstalled", () => {
   setMessage("NeverQuit a fost instalată pe dispozitiv.");
-  installButton.classList.add("hidden");
-  installHelp.classList.add("hidden");
+  if (installButton) installButton.classList.add("hidden");
+  if (installHelp) installHelp.classList.add("hidden");
 });
 
 
