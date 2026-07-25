@@ -1,8 +1,9 @@
-# NeverQuit V6.6
+# NeverQuit V7.1 — Spark vizibil
 
-Corecție navigare Setări.
+Actualizare cerută după testarea lui Iosif:
 
-- butonul Setări deschide corect pagina dedicată;
-- pagina Misiuni este ascunsă când sunt deschise Setările;
-- verificată navigarea între toate cele cinci pagini;
-- cache PWA actualizat la V6.6.
+- contorul Spark este vizibil permanent în header;
+- este poziționat între titlul aplicației și streak;
+- valoarea este mare, clară și actualizată din soldul real;
+- layout responsiv pentru Android;
+- cache PWA actualizat la V7.1.

@@ -14,14 +14,14 @@
 <link href="manifest.webmanifest" rel="manifest"/>
 <link href="icons/icon-192.png" rel="icon"/>
 <link href="icons/icon-192.png" rel="apple-touch-icon"/>
-<link href="styles.css?v=6.5.0" rel="stylesheet"/>
+<link href="styles.css?v=7.1.0" rel="stylesheet"/>
 </head>
-<body>
+<body data-active-view="missions" data-app-version="7.1.0">
 <main class="app-shell">
 
 
-<header class="hero"><div class="hero-copy"><p class="eyebrow">NEVERQUIT</p><h1>NeverQuit</h1><p class="hero-date" id="todayLabel"></p><p class="subtitle">Fiecare pas aprinde un Spark.</p></div><section aria-label="Streak curent" class="streak-panel"><span class="streak-flame">🔥</span><div><strong id="topStreak">0</strong><span>zile streak</span></div></section></header><section aria-label="Bun venit în NeverQuit" class="game-welcome">
-<img alt="Otto, vidra zâmbitoare" class="welcome-otto" src="icons/otto-smile.svg?v=6.5.0"/>
+<header class="hero"><div class="hero-copy"><p class="eyebrow">NEVERQUIT</p><h1>NeverQuit</h1><p class="hero-date" id="todayLabel"></p><p class="subtitle">Fiecare pas aprinde un Spark.</p></div><section aria-label="Sold Spark" class="spark-panel"><span class="spark-icon">✦</span><div><strong id="sparkTotal">0</strong><span>Spark</span></div></section><section aria-label="Streak curent" class="streak-panel"><span class="streak-flame">🔥</span><div><strong id="topStreak">0</strong><span>zile streak</span></div></section></header><section aria-label="Bun venit în NeverQuit" class="game-welcome">
+<img alt="Otto, vidra zâmbitoare" class="welcome-otto" src="icons/otto-smile.svg?v=7.1.0"/>
 <div class="welcome-copy"><p class="eyebrow">OTTO ESTE CU TINE</p><h2 id="welcomeTitle">Bună, Iosif!</h2><p id="welcomeMessage">Astăzi ai o singură provocare. Hai să o ducem până la capăt!</p></div>
 </section>
 
@@ -122,6 +122,13 @@
 <div class="task-row"><label class="task-toggle"><input class="task-check" data-points="5" data-task-id="finish-tomorrow" type="checkbox"/><span class="task-box"></span><span class="task-name">🗓️ Pregătit pentru mâine</span></label><button class="help-button" data-help="Verifică programul, ghiozdanul sau echipamentul și alege primul lucru important de mâine." data-help-title="Cum mă pregătesc?" type="button">?</button></div>
 </div></div></article>
 </div>
+<section class="test-controls" aria-label="Comenzi pentru testare">
+  <p class="eyebrow">COMENZI DE TESTARE</p>
+  <div class="test-controls-grid">
+    <button class="test-control-button" id="quickParentButton" type="button"><span>🔒</span><strong>Acces părinte</strong></button>
+    <button class="test-control-button danger" id="quickResetButton" type="button"><span>↻</span><strong>Resetează ziua</strong></button>
+  </div>
+</section>
 </section>
 <section class="rewards-section app-view" data-view="rewards">
 <div class="section-heading">
@@ -191,7 +198,7 @@
 </div></article></section><p aria-live="polite" class="message" id="message" role="status"></p>
 </main>
 <nav aria-label="Navigație principală" class="bottom-nav">
-<button class="bottom-nav-button active" data-target-view="missions" type="button"><span class="nav-icon">🎯</span><span>Misiuni</span></button>
+<button class="bottom-nav-button active" data-target-view="missions" type="button" aria-current="page"><span class="nav-icon">🎯</span><span>Misiuni</span></button>
 <button class="bottom-nav-button" data-target-view="achievements" type="button"><span class="nav-icon">🏅</span><span>Insigne</span><span class="nav-notification hidden" id="achievementNavBadge">0</span></button>
 <button class="bottom-nav-button" data-target-view="rewards" type="button"><span class="nav-icon">🎁</span><span>Recompense</span><span class="nav-notification hidden" id="rewardNavBadge">0</span></button>
 <button class="bottom-nav-button" data-target-view="friends" type="button"><span class="nav-icon">👥</span><span>Prieteni</span></button>
@@ -257,6 +264,6 @@
 </div>
 </form>
 </dialog>
-<script src="app.js?v=6.5.0"></script>
+<script src="app.js?v=7.0.0"></script>
 </body>
 </html>

@@ -1,0 +1,1 @@
+NeverQuit V6.6 - Corecție buton Setări și navigare.

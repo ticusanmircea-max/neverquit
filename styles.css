@@ -1131,7 +1131,7 @@ body[data-active-view="settings"] .app-view[data-view="settings"] { display: blo
   width: min(100%, 760px);
   transform: translateX(-50%);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 3px;
   padding: 8px max(8px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
   border-top: 1px solid rgba(148,163,184,.2);
@@ -1798,4 +1798,95 @@ body {
   .task-name { font-size: .93rem !important; }
   .bottom-nav-button { padding-inline: 1px; font-size: .57rem; }
   .bottom-nav-button .nav-icon { font-size: 1.24rem; }
+}
+
+
+/* V6.7 — comenzi de testare accesibile direct din pagina Misiuni */
+.test-controls {
+  margin: 20px 0 10px;
+  padding: 16px;
+  border: 1px solid rgba(148,163,184,.18);
+  border-radius: 20px;
+  background: rgba(15,23,42,.82);
+}
+.test-controls .eyebrow { margin: 0 0 11px; }
+.test-controls-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.test-control-button {
+  min-height: 56px; display:flex; align-items:center; justify-content:center; gap:9px;
+  border:1px solid rgba(251,146,60,.35); border-radius:15px; color:#fff7ed;
+  background:rgba(124,45,18,.3); font:inherit; cursor:pointer; touch-action:manipulation;
+}
+.test-control-button span { font-size:1.2rem; }
+.test-control-button.danger { border-color:rgba(248,113,113,.35); background:rgba(127,29,29,.28); color:#fee2e2; }
+.test-control-button:active { transform:scale(.98); }
+@media (max-width:420px) { .test-controls-grid { grid-template-columns:1fr; } }
+
+
+/* NeverQuit V7.0 Stable — navigare deterministă */
+.app-view[hidden] { display: none !important; }
+.app-view:not([hidden]) { display: block; }
+.bottom-nav-button[aria-current="page"] {
+  color: #f8fafc;
+  background: rgba(37, 99, 235, .24);
+}
+.bottom-nav-button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.settings-section:not([hidden]) { display: block !important; }
+
+
+/* V7.1 — Spark vizibil în header, între titlu și streak */
+.hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: start !important;
+  column-gap: 10px;
+}
+.spark-panel {
+  min-width: 108px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 12px;
+  border: 1px solid rgba(250, 204, 21, .48);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(113, 63, 18, .52), rgba(30, 41, 59, .94));
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.spark-icon {
+  font-size: 1.9rem;
+  line-height: 1;
+  color: #fde047;
+  filter: drop-shadow(0 0 10px rgba(250, 204, 21, .55));
+}
+.spark-panel strong {
+  display: block;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: #fef3c7;
+}
+.spark-panel span:last-child {
+  display: block;
+  margin-top: 4px;
+  color: #fde68a;
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .hero { grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 7px; }
+  .spark-panel, .streak-panel { min-width: 88px; padding: 9px 8px; gap: 5px; }
+  .spark-icon, .streak-flame { font-size: 1.55rem; }
+  .spark-panel strong, .streak-panel strong { font-size: 1.4rem; }
+  .spark-panel span:last-child, .streak-panel span:last-child { font-size: .56rem; }
+}
+@media (max-width: 400px) {
+  .hero { grid-template-columns: 1fr auto auto; }
+  .hero-copy h1 { font-size: 1.75rem; }
+  .hero-date { font-size: .72rem; }
+  .hero .subtitle { font-size: .76rem; max-width: 150px; }
+  .spark-panel, .streak-panel { min-width: 76px; padding: 8px 6px; border-radius: 15px; }
+  .spark-icon, .streak-flame { font-size: 1.35rem; }
+  .spark-panel strong, .streak-panel strong { font-size: 1.25rem; }
 }

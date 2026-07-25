@@ -11,6 +11,8 @@ const reservedText = document.getElementById("reservedText");
 const progressText = document.getElementById("progressText");
 const progressBar = document.getElementById("progressBar");
 const resetButton = document.getElementById("resetButton");
+const quickResetButton = document.getElementById("quickResetButton");
+const quickParentButton = document.getElementById("quickParentButton");
 const message = document.getElementById("message");
 const claimButtons = [...document.querySelectorAll(".claim-button")];
 const todayLabel = document.getElementById("todayLabel");
@@ -537,16 +539,32 @@ function renderBottomNotifications() {
 }
 
 function switchView(view) {
-  document.body.dataset.activeView = view;
-  bottomNavButtons.forEach((button) => button.classList.toggle("active", button.dataset.targetView === view));
+  const allowedViews = new Set(["missions", "achievements", "rewards", "friends", "settings"]);
+  const targetView = allowedViews.has(view) ? view : "missions";
 
-  if (view === "achievements") state.unreadAchievementIds = [];
-  if (view === "rewards") {
+  document.body.dataset.activeView = targetView;
+
+  document.querySelectorAll(".app-view[data-view]").forEach((section) => {
+    const isActive = section.dataset.view === targetView;
+    section.hidden = !isActive;
+    section.setAttribute("aria-hidden", String(!isActive));
+  });
+
+  bottomNavButtons.forEach((button) => {
+    const isActive = button.dataset.targetView === targetView;
+    button.classList.toggle("active", isActive);
+    if (isActive) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  });
+
+  if (targetView === "achievements") state.unreadAchievementIds = [];
+  if (targetView === "rewards") {
     state.seenAvailableRewardIds = [...new Set([...state.seenAvailableRewardIds, ...getAvailableRewardIds()])];
   }
+
   saveState();
   renderBottomNotifications();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "auto" });
 }
 
 function renderRewards() {
@@ -852,7 +870,7 @@ claimButtons.forEach((button) => {
   button.addEventListener("click", () => requestReward(card));
 });
 
-if (resetButton) resetButton.addEventListener("click", () => {
+function resetToday() {
   const checkedTasks = calculateCompletedTasks();
   const pointsToday = checkedTasks.reduce((sum, check) => sum + Number(check.dataset.points), 0);
 
@@ -889,7 +907,9 @@ if (resetButton) resetButton.addEventListener("click", () => {
   saveState();
   setMessage("Misiunile zilei au fost resetate.");
   render();
-});
+}
+if (resetButton) resetButton.addEventListener("click", resetToday);
+if (quickResetButton) quickResetButton.addEventListener("click", resetToday);
 
 
 closeTaskHelp.addEventListener("click", () => taskHelpDialog.close());
@@ -907,6 +927,7 @@ levelUpDialog.addEventListener("click", (event) => {
 });
 
 if (parentButton) parentButton.addEventListener("click", openParentDialog);
+if (quickParentButton) quickParentButton.addEventListener("click", openParentDialog);
 if (pinAction) pinAction.addEventListener("click", handlePinAction);
 if (pinInput) pinInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -926,10 +947,14 @@ if (nextMissionButton) nextMissionButton.addEventListener("click", () => {
 });
 
 bottomNavButtons.forEach((button) => {
-  button.addEventListener("click", () => switchView(button.dataset.targetView));
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    switchView(button.dataset.targetView);
+  });
 });
 
-document.body.dataset.activeView = "missions";
+// Inițializare explicită: nu depinde de CSS sau de starea rămasă în cache.
+switchView("missions");
 
 rolloverDayIfNeeded();
 updateAchievements();
@@ -988,7 +1013,7 @@ if (saveProfileButton) saveProfileButton.addEventListener("click", () => {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch((error) => {
+    navigator.serviceWorker.register("./service-worker.js?v=7.0.0", { updateViaCache: "none" }).catch((error) => {
       console.error("Service worker registration failed:", error);
     });
   });
