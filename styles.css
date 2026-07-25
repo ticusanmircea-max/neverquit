@@ -1117,10 +1117,12 @@ body { padding-bottom: 92px; }
 .app-view[data-view]:not([data-view="missions"]) { display: none; }
 body[data-active-view="achievements"] .app-view[data-view="missions"],
 body[data-active-view="rewards"] .app-view[data-view="missions"],
-body[data-active-view="friends"] .app-view[data-view="missions"] { display: none; }
+body[data-active-view="friends"] .app-view[data-view="missions"],
+body[data-active-view="settings"] .app-view[data-view="missions"] { display: none; }
 body[data-active-view="achievements"] .app-view[data-view="achievements"],
 body[data-active-view="rewards"] .app-view[data-view="rewards"],
-body[data-active-view="friends"] .app-view[data-view="friends"] { display: block; }
+body[data-active-view="friends"] .app-view[data-view="friends"],
+body[data-active-view="settings"] .app-view[data-view="settings"] { display: block; }
 .bottom-nav {
   position: fixed;
   left: 50%;

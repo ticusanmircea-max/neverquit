@@ -1,3 +1,8 @@
-# NeverQuit V6.0
+# NeverQuit V6.6
 
-Versiune cu interfață aerisită și progres secvențial. Informațiile dinamice sunt mutate într-o bară fixă extensibilă în partea de sus. În „Corpul campionului”, Kineto este activitate bonus de +2 Spark și nu blochează următoarea misiune.
+Corecție navigare Setări.
+
+- butonul Setări deschide corect pagina dedicată;
+- pagina Misiuni este ascunsă când sunt deschise Setările;
+- verificată navigarea între toate cele cinci pagini;
+- cache PWA actualizat la V6.6.
